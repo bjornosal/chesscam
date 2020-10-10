@@ -6,12 +6,15 @@ function initializeSocket(socket) {
     socket
         .on("init", async () => {
             id = await users.create(socket);
+            console.log("init id", id);
             socket.emit("init", { id });
-            console.log("init");
         })
         .on("request", (data) => {
+            console.log("id", id);
             const receiver = users.get(data.to);
             if (receiver) {
+                console.log("id", data);
+                console.log("id", id);
                 receiver.emit("request", { from: id });
             }
             console.log("request");
