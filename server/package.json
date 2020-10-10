@@ -1,0 +1,29 @@
+{
+    "name": "chesscam-server",
+    "version": "0.0.1",
+    "description": "",
+    "main": "sindex.js",
+    "scripts": {
+        "dev": "nodemon --watch **/*.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "\u0016https://github.com/bjornosal/chesscam"
+    },
+    "keywords": [
+        "chess",
+        "webcam",
+        "webrtc",
+        "node"
+    ],
+    "author": "Bjørn Olav Salvesen",
+    "license": "ISC",
+    "devDependencies": {
+        "nodemon": "^2.0.4"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "socket.io": "^2.3.0"
+    }
+}
