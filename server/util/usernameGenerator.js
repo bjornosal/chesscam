@@ -132,7 +132,7 @@ const nouns = [
     "star",
 ];
 
-function createUsername() {
+function generateClientId() {
     const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
     const noun = nouns[Math.floor(Math.random() * nouns.length)];
     const MIN = 1000;
@@ -142,6 +142,6 @@ function createUsername() {
     return `${adj}-${noun}-${num}`;
 }
 
-module.exports = () => {
-    createUsername;
+module.exports = {
+    generateClientId,
 };

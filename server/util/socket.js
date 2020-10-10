@@ -7,12 +7,14 @@ function initializeSocket(socket) {
         .on("init", async () => {
             id = await users.create(socket);
             socket.emit("init", { id });
+            console.log("init");
         })
         .on("request", (data) => {
             const receiver = users.get(data.to);
             if (receiver) {
                 receiver.emit("request", { from: id });
             }
+            console.log("request");
         })
         .on("call", (data) => {
             const receiver = users.get(data.to);
@@ -21,12 +23,14 @@ function initializeSocket(socket) {
             } else {
                 socket.emit("failed");
             }
+            console.log("call");
         })
         .on("end", (data) => {
             const receiver = users.get(data.to);
             if (receiver) {
                 receiver.emit("end");
             }
+            console.log("end");
         })
         .on("disconnect", () => {
             users.remove(id);

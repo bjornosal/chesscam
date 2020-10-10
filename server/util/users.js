@@ -3,10 +3,10 @@ const generator = require("./usernameGenerator");
 const users = {};
 
 async function randomID() {
-    let id = generator.createUsername();
+    let id = generator.generateClientId();
     while (id in users) {
         await Promise.delay(5);
-        id = generator.createUsername();
+        id = generator.generateClientId();
     }
     return id;
 }
