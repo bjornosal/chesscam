@@ -1,4 +1,4 @@
-const generator = require("./usernameGenerator");
+const generator = require('./usernameGenerator');
 
 const users = {};
 

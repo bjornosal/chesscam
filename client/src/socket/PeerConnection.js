@@ -1,8 +1,8 @@
-import MediaDevice from "./MediaDevice";
-import Emitter from "./Emitter";
-import io from "socket.io-client";
+import MediaDevice from './MediaDevice';
+import Emitter from './Emitter';
+import socket from './socket';
 
-const PC_CONFIG = { iceServers: [{ urls: ["stun:stun.l.google.com:19302"] }] };
+const PC_CONFIG = { iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }] };
 
 class PeerConnection extends Emitter {
     /**
@@ -11,14 +11,13 @@ class PeerConnection extends Emitter {
      */
     constructor(friendID) {
         super();
-        this.socket = io({ path: "/bridge" });
         this.pc = new RTCPeerConnection(PC_CONFIG);
         this.pc.onicecandidate = (event) =>
-            this.socket.emit("call", {
+            socket.emit('call', {
                 to: this.friendID,
                 candidate: event.candidate,
             });
-        this.pc.ontrack = (event) => this.emit("peerStream", event.streams[0]);
+        this.pc.ontrack = (event) => this.emit('peerStream', event.streams[0]);
 
         this.mediaDevice = new MediaDevice();
         this.friendID = friendID;
@@ -31,13 +30,12 @@ class PeerConnection extends Emitter {
      */
     start(isCaller, config) {
         this.mediaDevice
-            .on("stream", (stream) => {
+            .on('stream', (stream) => {
                 stream.getTracks().forEach((track) => {
                     this.pc.addTrack(track, stream);
                 });
-                this.emit("localStream", stream);
-                if (isCaller)
-                    this.socket.emit("request", { to: this.friendID });
+                this.emit('localStream', stream);
+                if (isCaller) socket.emit('request', { to: this.friendID });
                 else this.createOffer();
             })
             .start(config);
@@ -51,7 +49,7 @@ class PeerConnection extends Emitter {
      */
     stop(isStarter) {
         if (isStarter) {
-            this.socket.emit("end", { to: this.friendID });
+            socket.emit('end', { to: this.friendID });
         }
         this.mediaDevice.stop();
         this.pc.close();
@@ -78,7 +76,7 @@ class PeerConnection extends Emitter {
 
     getDescription(desc) {
         this.pc.setLocalDescription(desc);
-        this.socket.emit("call", { to: this.friendID, sdp: desc });
+        socket.emit('call', { to: this.friendID, sdp: desc });
         return this;
     }
 

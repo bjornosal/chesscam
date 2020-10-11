@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-const StartGame = ({ startCall, clientId }) => {
+const StartGamePage = ({ startCall, clientId }) => {
     const [friendID, setFriendID] = useState(null);
 
     /**
@@ -12,7 +12,6 @@ const StartGame = ({ startCall, clientId }) => {
         const config = { audio: true, video };
         return () => friendID && startCall(true, friendID, config);
     };
-    console.log(`Rendered ${clientId}`);
 
     return (
         <div className="container main-window">
@@ -55,9 +54,9 @@ const StartGame = ({ startCall, clientId }) => {
     );
 };
 
-StartGame.propTypes = {
+StartGamePage.propTypes = {
     clientId: PropTypes.string.isRequired,
     startCall: PropTypes.func.isRequired,
 };
 
-export default StartGame;
+export default StartGamePage;
