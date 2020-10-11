@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Emitter from './Emitter';
-
+// TODO: Replace lodash.
 /**
  * Manage all media devices
  */

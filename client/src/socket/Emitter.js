@@ -1,4 +1,5 @@
 import _ from 'lodash';
+// TODO: Replace lodash.
 
 class Emitter {
     constructor() {

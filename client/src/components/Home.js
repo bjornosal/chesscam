@@ -5,16 +5,15 @@ import CallModal from './CallModal';
 import StartGamePage from './StartGamePage';
 import socket from '../socket/socket';
 
+let pc = {};
 export const Home = () => {
     const [clientId, setClientId] = useState(-1);
-    const [callWindow, setCallWindow] = useState('');
-    const [callModal, setCallModal] = useState('');
+    const [callWindowActive, setCallWindowActive] = useState(false);
+    const [callModalActive, setCallModalActive] = useState(false);
     const [callFrom, setCallFrom] = useState('');
     const [localSource, setLocalSource] = useState(null);
     const [peerSource, setPeerSource] = useState(null);
     const [config, setConfig] = useState({});
-    const [pc, setPc] = useState({});
-
     useEffect(() => {
         socket
             .on('init', ({ id: clientId }) => {
@@ -23,7 +22,7 @@ export const Home = () => {
                 setClientId(clientId);
             })
             .on('request', ({ from: callFrom }) => {
-                setCallModal('active');
+                setCallModalActive(true);
                 console.log('from: ', callFrom);
                 setCallFrom(callFrom);
             })
@@ -43,24 +42,24 @@ export const Home = () => {
     }, []);
 
     const startCall = (isCaller, friendID, config) => {
-        console.log('friend ' + friendID);
         setConfig(config);
-        let pc = new PeerConnection(friendID)
+        pc = new PeerConnection(friendID)
             .on('localStream', (src) => {
                 if (!isCaller) {
-                    setCallModal('');
+                    setCallModalActive(false);
                 }
-                setCallWindow('active');
+                setCallWindowActive(true);
                 setLocalSource(src);
             })
-            .on('peerStream', (src) => setPeerSource(src))
+            .on('peerStream', (src) => {
+                setPeerSource(src);
+            })
             .start(isCaller, config);
-        setPc(pc);
     };
 
     const rejectCall = () => {
         socket.emit('end', { to: callFrom });
-        setCallModal('');
+        setCallModalActive(false);
     };
 
     const endCall = (isStarter) => {
@@ -71,17 +70,16 @@ export const Home = () => {
         setConfig({});
         setPeerSource(null);
         setLocalSource(null);
-        setCallWindow('');
-        setCallModal('');
+        setCallWindowActive(false);
+        setCallModalActive(false);
     };
 
-    console.log('pc', pc);
     return (
         <div>
             <StartGamePage startCall={startCall} clientId={clientId} />
             {Object.keys(config).length !== 0 && (
                 <CallWindow
-                    status={callWindow}
+                    active={callWindowActive}
                     localSrc={localSource}
                     peerSrc={peerSource}
                     config={config}
@@ -90,8 +88,8 @@ export const Home = () => {
                 />
             )}
             <CallModal
-                status={callModal}
-                startCall={() => startCall}
+                status={callModalActive}
+                startCall={startCall}
                 rejectCall={rejectCall}
                 callFrom={callFrom}
             />

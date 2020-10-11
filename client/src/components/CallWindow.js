@@ -27,7 +27,7 @@ function CallWindow({
     localSrc,
     config,
     mediaDevice,
-    status,
+    active,
     endCall,
 }) {
     const peerVideo = useRef(null);
@@ -64,7 +64,7 @@ function CallWindow({
     };
 
     return (
-        <StyledCallWindow className={'call-window'}>
+        <StyledCallWindow active={active} className={'call-window'}>
             <video id="peerVideo" ref={peerVideo} autoPlay />
             <video id="localVideo" ref={localVideo} autoPlay muted />
             <div className="video-control">
@@ -97,7 +97,7 @@ function CallWindow({
 }
 
 CallWindow.propTypes = {
-    status: PropTypes.string.isRequired,
+    active: PropTypes.bool.isRequired,
     localSrc: PropTypes.object, // eslint-disable-line
     peerSrc: PropTypes.object, // eslint-disable-line
     config: PropTypes.shape({
