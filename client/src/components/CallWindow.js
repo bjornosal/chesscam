@@ -86,7 +86,7 @@ function CallWindow({
                 </button>
                 <button
                     type="button"
-                    className=" hangup fa fa-phone"
+                    className="hangup"
                     onClick={() => endCall(true)}
                 >
                     <FontAwesomeIcon icon={faPhone} />

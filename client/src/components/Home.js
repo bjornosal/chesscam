@@ -4,6 +4,7 @@ import CallWindow from './CallWindow';
 import CallModal from './CallModal';
 import StartGamePage from './StartGamePage';
 import socket from '../socket/socket';
+import { Board } from './Board';
 
 let pc = {};
 export const Home = () => {
@@ -27,6 +28,7 @@ export const Home = () => {
                 setCallFrom(callFrom);
             })
             .on('call', (data) => {
+                console.log('BOARD', data);
                 if (data.sdp) {
                     pc.setRemoteDescription(data.sdp);
                     if (data.sdp.type === 'offer') pc.createAnswer();
@@ -76,6 +78,7 @@ export const Home = () => {
 
     return (
         <div>
+            <Board />
             <StartGamePage startCall={startCall} clientId={clientId} />
             {Object.keys(config).length !== 0 && (
                 <CallWindow
@@ -92,7 +95,7 @@ export const Home = () => {
                 startCall={startCall}
                 rejectCall={rejectCall}
                 callFrom={callFrom}
-            />
+            /> 
         </div>
     );
 };
