@@ -1,12 +1,11 @@
 const io = require('socket.io');
 const users = require('./users');
+const rooms = require('./rooms');
 const { Chess } = require('chess.js');
 
 function initSocket(socket) {
     let id;
     const chess = new Chess();
-    console.log('chess');
-    console.log(chess.ascii());
     socket
         .on('init', async () => {
             id = await users.create(socket);
@@ -15,7 +14,6 @@ function initSocket(socket) {
         .on('request', (data) => {
             const receiver = users.get(data.to);
             if (receiver) {
-                console.log('From: ' + id);
                 receiver.emit('request', { from: id });
             }
         })
@@ -25,11 +23,21 @@ function initSocket(socket) {
                 receiver.emit('call', {
                     ...data,
                     from: id,
-                    board: chess.board(),
                 });
+                rooms.create(id, data.to);
             } else {
                 socket.emit('failed');
             }
+        })
+        .on('start', (data) => {
+/*             let players = rooms.get(id);
+            players.forEach((player) => {
+                let playerSocket = users.get(player);
+                playerSocket.emit('start', chess.board());
+            });
+ */
+            //TODO: Remove this line and uncomment above
+            socket.emit('start', chess.board());
         })
         .on('move', (data) => {
             // Validate move
@@ -55,5 +63,5 @@ function initSocket(socket) {
 module.exports = (server) => {
     io({ path: '/bridge', serveClient: false })
         .listen(server, { log: true })
-        .on('connection', initSocket);
+        .on('connection', (socket) => initSocket(socket));
 };

@@ -7,9 +7,12 @@ import {
     faMicrophone,
 } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import { Board } from './Board';
+import socket from '../socket/socket';
 
 const StyledCallWindow = styled.div`
     position: absolute;
+    background-color: #ffdab9;
     top: 0;
     left: 0;
     width: 100vw;
@@ -48,6 +51,10 @@ function CallWindow({
         }
     });
 
+    const startGame = () => {
+        socket.emit("start")
+    }
+
     /**
      * Turn on/off a media device
      * @param {String} deviceType - Type of the device eg: Video, Audio
@@ -65,8 +72,21 @@ function CallWindow({
 
     return (
         <StyledCallWindow active={active} className={'call-window'}>
-            <video id="peerVideo" ref={peerVideo} autoPlay />
-            <video id="localVideo" ref={localVideo} autoPlay muted />
+           
+            <Board />
+            <video
+                id="peerVideo"
+                ref={peerVideo}
+                autoPlay
+                style={{ width: '200px' }}
+            />
+            <video
+                id="localVideo"
+                ref={localVideo}
+                autoPlay
+                muted
+                style={{ width: '200px' }}
+            />
             <div className="video-control">
                 <button
                     key="btnVideo"

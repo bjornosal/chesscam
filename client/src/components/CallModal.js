@@ -4,13 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo, faPhone } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 
-const Modal = styled.div`
+const StyledCallModal = styled.div`
     position: absolute;
     width: 400px;
     padding: 20px;
     left: calc(50vw - 200px);
     top: calc(50vh - 60px);
     text-align: center;
+    background-color: blue;
     display: ${props => props.active ? "block" : "none"};
     z-index: ${props => props.active ? 9999 : ''};
 `;
@@ -23,7 +24,7 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
     };
 
     return (
-        <Modal active={status} className={`call-modal `}>
+        <StyledCallModal active={status} className={`call-modal `}>
             <p>
                 <span className="caller">{`${callFrom} ringer`}</span>
             </p>
@@ -45,7 +46,7 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
             >
                 <FontAwesomeIcon icon={faPhone} />
             </button>
-        </Modal>
+        </StyledCallModal>
     );
 }
 

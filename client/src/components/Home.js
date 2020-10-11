@@ -28,7 +28,6 @@ export const Home = () => {
                 setCallFrom(callFrom);
             })
             .on('call', (data) => {
-                console.log('BOARD', data);
                 if (data.sdp) {
                     pc.setRemoteDescription(data.sdp);
                     if (data.sdp.type === 'offer') pc.createAnswer();
@@ -78,6 +77,9 @@ export const Home = () => {
 
     return (
         <div>
+            <button type="button" onClick={() => socket.emit('start')}>
+                Start a chessgame
+            </button>
             <Board />
             <StartGamePage startCall={startCall} clientId={clientId} />
             {Object.keys(config).length !== 0 && (
@@ -95,7 +97,7 @@ export const Home = () => {
                 startCall={startCall}
                 rejectCall={rejectCall}
                 callFrom={callFrom}
-            /> 
+            />
         </div>
     );
 };
