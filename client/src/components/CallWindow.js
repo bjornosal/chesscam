@@ -1,8 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faVideo,
+    faPhone,
+    faMicrophone,
+} from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
+
+const StyledCallWindow = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: ${(props) => (props.active ? 1 : 0)};
+    z-index: ${(props) => (props.active ? 'auto' : -1)};
+`;
 
 const getButtonClass = (icon, enabled) => {
-    return `btn-action fa ${icon}`, { disable: !enabled };
+    return ` fa ${icon}`, { disable: !enabled };
 };
 
 function CallWindow({
@@ -47,7 +64,7 @@ function CallWindow({
     };
 
     return (
-        <div className={'call-window'}>
+        <StyledCallWindow className={'call-window'}>
             <video id="peerVideo" ref={peerVideo} autoPlay />
             <video id="localVideo" ref={localVideo} autoPlay muted />
             <div className="video-control">
@@ -56,20 +73,26 @@ function CallWindow({
                     type="button"
                     className={getButtonClass('fa-video-camera', video)}
                     onClick={() => toggleMediaDevice('video')}
-                />
+                >
+                    <FontAwesomeIcon icon={faVideo} />
+                </button>
                 <button
                     key="btnAudio"
                     type="button"
                     className={getButtonClass('fa-microphone', audio)}
                     onClick={() => toggleMediaDevice('audio')}
-                />
+                >
+                    <FontAwesomeIcon icon={faMicrophone} />
+                </button>
                 <button
                     type="button"
-                    className="btn-action hangup fa fa-phone"
+                    className=" hangup fa fa-phone"
                     onClick={() => endCall(true)}
-                />
+                >
+                    <FontAwesomeIcon icon={faPhone} />
+                </button>
             </div>
-        </div>
+        </StyledCallWindow>
     );
 }
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVideo, faPhone } from '@fortawesome/free-solid-svg-icons';
 const StartGamePage = ({ startCall, clientId }) => {
     const [friendID, setFriendID] = useState(null);
 
@@ -25,14 +26,14 @@ const StartGamePage = ({ startCall, clientId }) => {
                         readOnly
                     />
                 </h3>
-                <h4>Kom igang med å ringe ditt barnebarn</h4>
+                <h4>Kom igang med å ringe din besteforelder/ditt barnebarn</h4>
             </div>
             <div>
                 <input
                     type="text"
                     className="txt-clientId"
                     spellCheck={false}
-                    placeholder="Your friend ID"
+                    placeholder="Din mormors ID"
                     onChange={(event) => {
                         setFriendID(event.target.value);
                     }}
@@ -40,14 +41,18 @@ const StartGamePage = ({ startCall, clientId }) => {
                 <div>
                     <button
                         type="button"
-                        className="btn-action fa fa-video-camera"
+                        className=" fa fa-video-camera"
                         onClick={callWithVideo(true)}
-                    />
+                    >
+                        <FontAwesomeIcon icon={faVideo} />
+                    </button>
                     <button
                         type="button"
-                        className="btn-action fa fa-phone"
+                        className=" fa fa-phone"
                         onClick={callWithVideo(false)}
-                    />
+                    >
+                        <FontAwesomeIcon icon={faPhone} />
+                    </button>
                 </div>
             </div>
         </div>
