@@ -8,10 +8,55 @@ const StyledBoard = styled.div`
     margin: 20px;
     display: grid;
     grid-template: repeat(8, 1fr) / repeat(8, 1fr);
-    grid-gap: 10px;
+    grid-gap: 1px;
 `;
 export const Board = () => {
-    const [board, setBoard] = useState([]);
+    const [board, setBoard] = useState([
+        [
+            { type: 'r', color: 'b' },
+            { type: 'n', color: 'b' },
+            { type: 'b', color: 'b' },
+            { type: 'q', color: 'b' },
+            { type: 'k', color: 'b' },
+            { type: 'b', color: 'b' },
+            { type: 'n', color: 'b' },
+            { type: 'r', color: 'b' },
+        ],
+        [
+            { type: 'p', color: 'b' },
+            { type: 'p', color: 'b' },
+            { type: 'p', color: 'b' },
+            { type: 'p', color: 'b' },
+            { type: 'p', color: 'b' },
+            { type: 'p', color: 'b' },
+            { type: 'p', color: 'b' },
+            { type: 'p', color: 'b' },
+        ],
+        [null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null],
+        [
+            { type: 'p', color: 'w' },
+            { type: 'p', color: 'w' },
+            { type: 'p', color: 'w' },
+            { type: 'p', color: 'w' },
+            { type: 'p', color: 'w' },
+            { type: 'p', color: 'w' },
+            { type: 'p', color: 'w' },
+            { type: 'p', color: 'w' },
+        ],
+        [
+            { type: 'r', color: 'w' },
+            { type: 'n', color: 'w' },
+            { type: 'b', color: 'w' },
+            { type: 'q', color: 'w' },
+            { type: 'k', color: 'w' },
+            { type: 'b', color: 'w' },
+            { type: 'n', color: 'w' },
+            { type: 'r', color: 'w' },
+        ],
+    ]);
 
     useEffect(() => {
         socket
@@ -31,16 +76,21 @@ export const Board = () => {
 
     return (
         <StyledBoard className="boardContainer">
-            {board.map((row) => {
-                return row.map((tile) => {
+            {board.map((row, rowIndex) => {
+                return row.map((tile, tileIndex) => {
                     return (
                         <div
                             style={{
-                                backgroundColor: 'grey',
+                                backgroundColor:
+                                    (rowIndex % 2 === 0 &&
+                                        tileIndex % 2 === 0) ||
+                                    (rowIndex % 2 !== 0 && tileIndex % 2 !== 0)
+                                        ? 'grey'
+                                        : 'brown',
                                 color: tile?.color === 'b' ? 'black' : 'white',
                             }}
                         >
-                            {tile?.type || 'nada'}
+                            {tile?.type || ''}
                         </div>
                     );
                 });
