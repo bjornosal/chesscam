@@ -3,9 +3,15 @@ const users = require('./users');
 const rooms = require('./rooms');
 const { Chess } = require('chess.js');
 
+const colors = {
+    BLACK: 'b',
+    WHITE: 'w',
+};
+
 function initSocket(socket) {
     let id;
     const chess = new Chess();
+    console.log('moves: ', chess.moves({ square: 'e2' }));
     socket
         .on('init', async () => {
             id = await users.create(socket);
@@ -30,14 +36,19 @@ function initSocket(socket) {
             }
         })
         .on('start', (data) => {
-/*             let players = rooms.get(id);
+            /*             let players = rooms.get(id);
             players.forEach((player) => {
                 let playerSocket = users.get(player);
                 playerSocket.emit('start', chess.board());
             });
  */
             //TODO: Remove this line and uncomment above
-            socket.emit('start', chess.board());
+            socket.emit('start', chess, chess.board(), colors.WHITE);
+        })
+        .on('choose', (tile) => {
+            console.log(chess.turn());
+            console.log('DIS TILE: ' + tile);
+            console.log('moves: ', chess.moves({ square: tile }));
         })
         .on('move', (data) => {
             // Validate move
@@ -45,7 +56,7 @@ function initSocket(socket) {
             if (result == null) {
                 socket.emit('invalidMove');
             } else {
-                receiver.emit('move', { board: chess.board() });
+                receiver.emit('move', chess, chess.board());
             }
         })
         .on('end', (data) => {

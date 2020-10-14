@@ -60,7 +60,7 @@ const StartGamePage = ({ startCall, clientId }) => {
 };
 
 StartGamePage.propTypes = {
-    clientId: PropTypes.string.isRequired,
+    clientId: PropTypes.number.isRequired,
     startCall: PropTypes.func.isRequired,
 };
 

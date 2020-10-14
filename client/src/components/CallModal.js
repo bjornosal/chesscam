@@ -51,7 +51,7 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
 }
 
 CallModal.propTypes = {
-    status: PropTypes.string.isRequired,
+    status: PropTypes.bool.isRequired,
     callFrom: PropTypes.string.isRequired,
     startCall: PropTypes.func.isRequired,
     rejectCall: PropTypes.func.isRequired,
