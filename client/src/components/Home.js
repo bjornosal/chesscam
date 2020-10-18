@@ -77,9 +77,7 @@ export const Home = () => {
 
     return (
         <div>
-            <button type="button" onClick={() => socket.emit('start')}>
-                Start a chessgame
-            </button>
+            
             <Board />
             <StartGamePage startCall={startCall} clientId={clientId} />
             {Object.keys(config).length !== 0 && (

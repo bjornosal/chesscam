@@ -72,7 +72,9 @@ function CallWindow({
 
     return (
         <StyledCallWindow active={active} className={'call-window'}>
-           
+           <button type="button" onClick={() => socket.emit('start')}>
+                Start a chessgame
+            </button>
             <Board />
             <video
                 id="peerVideo"

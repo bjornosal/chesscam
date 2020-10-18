@@ -73,8 +73,9 @@ export const Board = () => {
     useEffect(() => {
         //TODO: Can I just send the entire chess object?
         socket
-            .on('start', (chessObject, board, color) => {
+            .on('start', (board, color) => {
                 setBoard(board);
+                console.log('what color am I:', color);
                 switch (color) {
                     case colors.BLACK:
                         setColor(colors.BLACK);
@@ -87,24 +88,29 @@ export const Board = () => {
                     default:
                         alert('Biip biip. Error. No comprende.');
                 }
-                console.log(chessObject);
             })
-            .on('move', (chessObject, board) => {
-                // const game = new Game(chessObject);
+            .on('successMove', (board) => {
+                setBoard(board);
+                setMyTurn(false);
+                setPossibleMoves([]);
+            })
+            .on('opponentMove', (board) => {
+                console.log('that was a move');
                 setBoard(board);
                 setMyTurn(true);
             })
             .on('possibleMoves', (possibleMoves) => {
-                setPossibleMoves(possibleMoves);
+                setPossibleMoves(possibleMoves.map((move) => move.to));
             })
             .on('invalidMove', () => {
-                alert('invalid move');
+                alert('Server says: invalid move');
                 setMyTurn(true);
             });
     }, []);
 
     const getColumnLetter = (column) => {
         //TODO: Switcheroo if black?
+        // if (color === colors.WHITE) {
         switch (column) {
             case 0:
                 return 'a';
@@ -123,6 +129,25 @@ export const Board = () => {
             case 7:
                 return 'h';
         }
+        /*      }  else {
+           switch (column) {
+                case 0:
+                    return 'h';
+                case 1:
+                    return 'g';
+                case 2:
+                    return 'f';
+                case 3:
+                    return 'e';
+                case 4:
+                    return 'd';
+                case 5:
+                    return 'c';
+                case 6:
+                    return 'b';
+                case 7:
+                    return 'a';
+        } */
     };
 
     const getRowFromIndex = (index) => {
@@ -137,6 +162,7 @@ export const Board = () => {
     const getSquare = (column, row) => {
         return getColumnLetter(column) + (row + 1);
     };
+
     const choosePiece = (rowIndex, columnIndex) => {
         if (!myTurn) {
             console.log('not your turn');
@@ -171,8 +197,8 @@ export const Board = () => {
             return false;
         }
 
-        const didChoosePiece = choosePiece(rowIndex, columnIndex);
-
+        let didChoosePiece = choosePiece(rowIndex, columnIndex);
+        console.log('choosing piece again');
         if (didChoosePiece) {
             return;
         }
@@ -184,11 +210,22 @@ export const Board = () => {
 
         //Now i should have a chosen piece.
         //DO MOVE
+        let tileInNotation = getTileInNotation(columnIndex, rowIndex);
+        if (!possibleMoves.includes(tileInNotation)) {
+            console.log('Not a valid move.');
+            return;
+        }
 
-        /*   socket.emit('move', {
-            from: chosenTile,
-            to: { column: columnIndex, row: rowIndex },
-        }); */
+        console.log(chosenTile);
+        console.log(columnIndex, rowIndex);
+        socket.emit('move', {
+            from: getTileInNotation(chosenTile.column, chosenTile.row),
+            to: tileInNotation,
+        });
+    };
+
+    const getTileInNotation = (column, row) => {
+        return getColumnLetter(column) + getRowFromIndex(row - 1);
     };
 
     const shouldBeColorX = (row, column) => {
@@ -200,8 +237,7 @@ export const Board = () => {
 
     const getTileColor = (row, column) => {
         let tileInNotation = getColumnLetter(column) + getRowFromIndex(row - 1);
-        console.log(tileInNotation);
-        if (possibleMoves.some((move) => move.to === tileInNotation)) {
+        if (possibleMoves.includes(tileInNotation)) {
             return 'red';
         }
         return shouldBeColorX(row, column) ? 'grey' : 'silver';
