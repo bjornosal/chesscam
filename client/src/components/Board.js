@@ -122,14 +122,14 @@ export const Board = () => {
     const getRowFromIndex = (index) => {
         //If I'm black, it should already be correct if rendered right.
         if (color === colors.BLACK) {
-            return index;
+            return index + 1;
         }
 
-        return 7 - index;
+        return 8 - index;
     };
 
     const getSquare = (column, row) => {
-        return getColumnLetter(column) + (row + 1);
+        return getColumnLetter(column) + row;
     };
 
     const choosePiece = (rowIndex, columnIndex) => {
@@ -138,11 +138,6 @@ export const Board = () => {
             return false;
         }
 
-        if (color === colors.BLACK) {
-            console.log(rowIndex, columnIndex);
-            console.log(board[rowIndex][columnIndex]);
-        }
-        console.log(rowIndex, columnIndex);
         const piece = board[rowIndex][columnIndex];
         if (piece === null) {
             return false;
@@ -155,8 +150,8 @@ export const Board = () => {
         }
 
         setChosenTile({ column: columnIndex, row: rowIndex });
-
         const square = getSquare(columnIndex, getRowFromIndex(rowIndex));
+
         socket.emit('choose', square);
 
         return true;
@@ -171,7 +166,6 @@ export const Board = () => {
             return false;
         }
         let didChoosePiece = choosePiece(rowIndex, columnIndex);
-        console.log('choosing piece again');
         if (didChoosePiece) {
             return;
         }
@@ -184,18 +178,11 @@ export const Board = () => {
         //Now i should have a chosen piece.
         //DO MOVE
         let tileInNotation = getTileInNotation(columnIndex, rowIndex);
-        console.log();
         if (!possibleMoves.includes(tileInNotation)) {
             console.log('Not a valid move.');
             return;
         }
 
-        console.log(chosenTile);
-        console.log(columnIndex, rowIndex);
-        console.log(
-            'from: ',
-            getTileInNotation(chosenTile.column, chosenTile.row)
-        );
         console.log('to: ', tileInNotation);
         socket.emit('move', {
             from: getTileInNotation(chosenTile.column, chosenTile.row),
@@ -204,7 +191,7 @@ export const Board = () => {
     };
 
     const getTileInNotation = (column, row) => {
-        return getColumnLetter(column) + getRowFromIndex(row - 1);
+        return getColumnLetter(column) + getRowFromIndex(row);
     };
 
     const shouldBeColorX = (row, column) => {

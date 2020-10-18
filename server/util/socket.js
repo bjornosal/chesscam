@@ -10,8 +10,8 @@ const colors = {
 
 function initSocket(socket) {
     let id;
-    const chess = new Chess();
-    console.log('moves: ', chess.moves({ square: 'e2' }));
+    //TODO: Having troubles changing turns. 
+    //This issue is because the players are not using the same instance of the chess game.
     socket
         .on('init', async () => {
             id = await users.create(socket);
@@ -30,33 +30,43 @@ function initSocket(socket) {
                     ...data,
                     from: id,
                 });
-                rooms.create(id, data.to);
+                rooms.create(socket, receiver);
             } else {
                 socket.emit('failed');
             }
         })
-        .on('start', (data) => {
-            /*             let players = rooms.get(id);
-            players.forEach((player) => {
-                let playerSocket = users.get(player);
-                playerSocket.emit('start', chess.board());
-            });
- */
+        .on('start', () => {
+            let opponent = rooms.get(socket.id).opponent;
+            let game = rooms.get(socket.id).game;
+            if (opponent === undefined || opponent === null) {
+                console.log("Couldn't start.");
+                return;
+            }
+            socket.emit('start', game.board(), colors.BLACK);
+            opponent.emit('start', game.board(), colors.WHITE);
             //TODO: Remove this line and uncomment above
-            socket.emit('start', chess, chess.board(), colors.WHITE);
+            // socket.emit('start', chess.board(), colors.WHITE);
         })
         .on('choose', (tile) => {
-            console.log(chess.turn());
-            console.log('DIS TILE: ' + tile);
-            console.log('moves: ', chess.moves({ square: tile }));
+
+            let game = rooms.get(socket.id).game;
+            socket.emit(
+                'possibleMoves',
+                game.moves({ verbose: true, square: tile })
+            );
         })
         .on('move', (data) => {
             // Validate move
-            let result = chess.move({ from: data.from, to: data.to });
+            let game = rooms.get(socket.id).game;
+            let result = game.move({ from: data.from, to: data.to });
             if (result == null) {
                 socket.emit('invalidMove');
             } else {
-                receiver.emit('move', chess, chess.board());
+                const receiver = rooms.get(socket.id).opponent;
+                socket.emit('successMove', game.board());
+                if (receiver) {
+                    receiver.emit('opponentMove', game.board());
+                }
             }
         })
         .on('end', (data) => {
@@ -66,6 +76,7 @@ function initSocket(socket) {
             }
         })
         .on('disconnect', () => {
+            // TODO: Inform that the other player left
             users.remove(id);
             console.log(id, 'disconnected');
         });
