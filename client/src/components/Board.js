@@ -60,12 +60,13 @@ export const Board = () => {
                     color === colors.WHITE ? newBoard : reverseBoard(newBoard)
                 );
                 setMyTurn(true);
-                console.log(newBoard);
-                console.log(reverseBoard(newBoard));
             })
             .on('possibleMoves', (possibleMoves) => {
-                console.log(possibleMoves);
-                setPossibleMoves(possibleMoves.map((move) => move.to));
+                setPossibleMoves(
+                    possibleMoves.map((move) => {
+                        return { to: move.to, promotion: move.promotion };
+                    })
+                );
             })
             .on('invalidMove', () => {
                 alert('Server says: invalid move');
@@ -152,7 +153,6 @@ export const Board = () => {
 
         setChosenTile({ column: columnIndex, row: rowIndex });
         const square = getSquare(columnIndex, getRowFromIndex(rowIndex));
-        const square = getSquare(columnIndex, getRowFromIndex(rowIndex));
 
         socket.emit('choose', square);
 
@@ -171,6 +171,7 @@ export const Board = () => {
         if (didChoosePiece) {
             return;
         }
+        console.log('possiblemoves ---> ', possibleMoves);
 
         //Reset chosen tile on every new turn
         if (chosenTile.column === -1) {
@@ -180,12 +181,21 @@ export const Board = () => {
         //Now i should have a chosen piece.
         //DO MOVE
         let tileInNotation = getTileInNotation(columnIndex, rowIndex);
-        if (!possibleMoves.includes(tileInNotation)) {
+        if (!possibleMoves.some((move) => move.to === tileInNotation)) {
             console.log('Not a valid move.');
             return;
         }
 
-        console.log('to: ', tileInNotation);
+        if (
+            possibleMoves.some(
+                (move) =>
+                    move.to === tileInNotation && move.promotion !== undefined
+            )
+        ) {
+            console.log('This is a promotion! Show promotion popup');
+            return;
+        }
+
         socket.emit('move', {
             from: getTileInNotation(chosenTile.column, chosenTile.row),
             to: tileInNotation,
@@ -205,11 +215,12 @@ export const Board = () => {
 
     const getTileColor = (row, column) => {
         let tileInNotation = getTileInNotation(column, row);
-        if (possibleMoves.includes(tileInNotation)) {
+        if (possibleMoves.some((move) => move.to === tileInNotation)) {
             return 'red';
         }
         return shouldBeColorX(row, column) ? 'grey' : 'silver';
     };
+
     return (
         <StyledBoard className="boardContainer">
             {board.map((row, rowIndex) => {
