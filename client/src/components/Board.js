@@ -64,6 +64,7 @@ export const Board = () => {
                 console.log(reverseBoard(newBoard));
             })
             .on('possibleMoves', (possibleMoves) => {
+                console.log(possibleMoves);
                 setPossibleMoves(possibleMoves.map((move) => move.to));
             })
             .on('invalidMove', () => {
@@ -122,14 +123,14 @@ export const Board = () => {
     const getRowFromIndex = (index) => {
         //If I'm black, it should already be correct if rendered right.
         if (color === colors.BLACK) {
-            return index;
+            return index +1;
         }
 
-        return 7 - index;
+        return 8 - index;
     };
 
     const getSquare = (column, row) => {
-        return getColumnLetter(column) + (row + 1);
+        return getColumnLetter(column) + (row);
     };
 
     const choosePiece = (rowIndex, columnIndex) => {
@@ -140,6 +141,7 @@ export const Board = () => {
 
         if (color === colors.BLACK) {
             console.log(rowIndex, columnIndex);
+            console.log(getTileInNotation(columnIndex, rowIndex));
             console.log(board[rowIndex][columnIndex]);
         }
         console.log(rowIndex, columnIndex);
@@ -155,8 +157,10 @@ export const Board = () => {
         }
 
         setChosenTile({ column: columnIndex, row: rowIndex });
-
+        console.log("chosen row: ", rowIndex)
         const square = getSquare(columnIndex, getRowFromIndex(rowIndex));
+        console.log("chosen square: ", square)
+
         socket.emit('choose', square);
 
         return true;
@@ -184,7 +188,6 @@ export const Board = () => {
         //Now i should have a chosen piece.
         //DO MOVE
         let tileInNotation = getTileInNotation(columnIndex, rowIndex);
-        console.log();
         if (!possibleMoves.includes(tileInNotation)) {
             console.log('Not a valid move.');
             return;
@@ -204,7 +207,7 @@ export const Board = () => {
     };
 
     const getTileInNotation = (column, row) => {
-        return getColumnLetter(column) + getRowFromIndex(row - 1);
+        return getColumnLetter(column) + getRowFromIndex(row);
     };
 
     const shouldBeColorX = (row, column) => {
