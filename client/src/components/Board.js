@@ -16,57 +16,13 @@ const StyledBoard = styled.div`
 const colors = {
     BLACK: 'b',
     WHITE: 'w',
+    NONE: "none"
 };
 
 export const Board = () => {
-    const [board, setBoard] = useState([
-        [
-            { type: 'r', color: 'b' },
-            { type: 'n', color: 'b' },
-            { type: 'b', color: 'b' },
-            { type: 'q', color: 'b' },
-            { type: 'k', color: 'b' },
-            { type: 'b', color: 'b' },
-            { type: 'n', color: 'b' },
-            { type: 'r', color: 'b' },
-        ],
-        [
-            { type: 'p', color: 'b' },
-            { type: 'p', color: 'b' },
-            { type: 'p', color: 'b' },
-            { type: 'p', color: 'b' },
-            { type: 'p', color: 'b' },
-            { type: 'p', color: 'b' },
-            { type: 'p', color: 'b' },
-            { type: 'p', color: 'b' },
-        ],
-        [null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null],
-        [
-            { type: 'p', color: 'w' },
-            { type: 'p', color: 'w' },
-            { type: 'p', color: 'w' },
-            { type: 'p', color: 'w' },
-            { type: 'p', color: 'w' },
-            { type: 'p', color: 'w' },
-            { type: 'p', color: 'w' },
-            { type: 'p', color: 'w' },
-        ],
-        [
-            { type: 'r', color: 'w' },
-            { type: 'n', color: 'w' },
-            { type: 'b', color: 'w' },
-            { type: 'q', color: 'w' },
-            { type: 'k', color: 'w' },
-            { type: 'b', color: 'w' },
-            { type: 'n', color: 'w' },
-            { type: 'r', color: 'w' },
-        ],
-    ]);
+    const [board, setBoard] = useState([]);
     const [chosenTile, setChosenTile] = useState({ column: -1, row: -1 });
-    const [color, setColor] = useState(colors.WHITE);
+    const [color, setColor] = useState(colors.NONE);
     const [myTurn, setMyTurn] = useState(true);
     const [possibleMoves, setPossibleMoves] = useState([]);
 
@@ -74,29 +30,36 @@ export const Board = () => {
         //TODO: Can I just send the entire chess object?
         socket
             .on('start', (board, color) => {
-                setBoard(board);
                 console.log('what color am I:', color);
                 switch (color) {
                     case colors.BLACK:
                         setColor(colors.BLACK);
+                        setBoard([...board].reverse());
                         setMyTurn(false);
                         break;
                     case colors.WHITE:
                         setColor(colors.WHITE);
+                        setBoard(board);
                         setMyTurn(true);
                         break;
                     default:
                         alert('Biip biip. Error. No comprende.');
                 }
             })
-            .on('successMove', (board) => {
-                setBoard(board);
+            .on('successMove', (newBoard) => {
+                console.log(newBoard)
+                setBoard(color === colors.WHITE ? newBoard : [...newBoard].reverse());
                 setMyTurn(false);
                 setPossibleMoves([]);
             })
-            .on('opponentMove', (board) => {
+            .on('opponentMove', (newBoard) => {
                 console.log('that was a move');
-                setBoard(board);
+                console.log(newBoard)
+                console.log("reversed", [...newBoard].reverse())
+                console.log("COLOR:", color); 
+                console.log("AM I WHITE: ", color === colors.WHITE)
+                const reversedBoard = [...newBoard].reverse()
+                setBoard(color === colors.WHITE ? newBoard : reversedBoard);
                 setMyTurn(true);
             })
             .on('possibleMoves', (possibleMoves) => {
@@ -110,27 +73,27 @@ export const Board = () => {
 
     const getColumnLetter = (column) => {
         //TODO: Switcheroo if black?
-        // if (color === colors.WHITE) {
-        switch (column) {
-            case 0:
-                return 'a';
-            case 1:
-                return 'b';
-            case 2:
-                return 'c';
-            case 3:
-                return 'd';
-            case 4:
-                return 'e';
-            case 5:
-                return 'f';
-            case 6:
-                return 'g';
-            case 7:
-                return 'h';
-        }
-        /*      }  else {
-           switch (column) {
+        if (color === colors.WHITE) {
+            switch (column) {
+                case 0:
+                    return 'a';
+                case 1:
+                    return 'b';
+                case 2:
+                    return 'c';
+                case 3:
+                    return 'd';
+                case 4:
+                    return 'e';
+                case 5:
+                    return 'f';
+                case 6:
+                    return 'g';
+                case 7:
+                    return 'h';
+            }
+        } else {
+            switch (column) {
                 case 0:
                     return 'h';
                 case 1:
@@ -147,7 +110,8 @@ export const Board = () => {
                     return 'b';
                 case 7:
                     return 'a';
-        } */
+            }
+        }
     };
 
     const getRowFromIndex = (index) => {
@@ -169,6 +133,11 @@ export const Board = () => {
             return false;
         }
 
+        if(color === colors.BLACK) {
+            console.log(rowIndex, columnIndex)
+            console.log(board[rowIndex][columnIndex]);
+        } 
+        console.log(rowIndex, columnIndex)
         const piece = board[rowIndex][columnIndex];
         if (piece === null) {
             return false;
@@ -196,7 +165,6 @@ export const Board = () => {
             console.log('not your turn');
             return false;
         }
-
         let didChoosePiece = choosePiece(rowIndex, columnIndex);
         console.log('choosing piece again');
         if (didChoosePiece) {
@@ -211,6 +179,7 @@ export const Board = () => {
         //Now i should have a chosen piece.
         //DO MOVE
         let tileInNotation = getTileInNotation(columnIndex, rowIndex);
+        console.log();
         if (!possibleMoves.includes(tileInNotation)) {
             console.log('Not a valid move.');
             return;
@@ -218,6 +187,8 @@ export const Board = () => {
 
         console.log(chosenTile);
         console.log(columnIndex, rowIndex);
+        console.log("from: ", getTileInNotation(chosenTile.column, chosenTile.row))
+        console.log("to: ", tileInNotation)
         socket.emit('move', {
             from: getTileInNotation(chosenTile.column, chosenTile.row),
             to: tileInNotation,
@@ -236,13 +207,13 @@ export const Board = () => {
     };
 
     const getTileColor = (row, column) => {
-        let tileInNotation = getColumnLetter(column) + getRowFromIndex(row - 1);
+        let tileInNotation = getTileInNotation(column, row);
         if (possibleMoves.includes(tileInNotation)) {
             return 'red';
         }
         return shouldBeColorX(row, column) ? 'grey' : 'silver';
     };
-
+    console.log("My color is: ", color)
     return (
         <StyledBoard className="boardContainer">
             {board.map((row, rowIndex) => {
