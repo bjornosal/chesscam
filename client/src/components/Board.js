@@ -64,6 +64,7 @@ export const Board = () => {
                 console.log(reverseBoard(newBoard));
             })
             .on('possibleMoves', (possibleMoves) => {
+                console.log(possibleMoves);
                 setPossibleMoves(possibleMoves.map((move) => move.to));
             })
             .on('invalidMove', () => {
@@ -150,6 +151,7 @@ export const Board = () => {
         }
 
         setChosenTile({ column: columnIndex, row: rowIndex });
+        const square = getSquare(columnIndex, getRowFromIndex(rowIndex));
         const square = getSquare(columnIndex, getRowFromIndex(rowIndex));
 
         socket.emit('choose', square);
