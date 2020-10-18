@@ -18,30 +18,6 @@ const colors = {
     WHITE: 'w',
 };
 
-const getColumnLetter = (column) => {
-    switch (column) {
-        case 0:
-            return 'a';
-        case 1:
-            return 'b';
-        case 2:
-            return 'c';
-        case 3:
-            return 'd';
-        case 4:
-            return 'e';
-        case 5:
-            return 'f';
-        case 6:
-            return 'g';
-        case 7:
-            return 'h';
-    }
-};
-
-const getSquare = (column, row) => {
-    return getColumnLetter(column) + (row + 1);
-};
 export const Board = () => {
     const [board, setBoard] = useState([
         [
@@ -92,15 +68,13 @@ export const Board = () => {
     const [chosenTile, setChosenTile] = useState({ column: -1, row: -1 });
     const [color, setColor] = useState(colors.WHITE);
     const [myTurn, setMyTurn] = useState(true);
-    const [validMoves, setValidMoves] = useState([]);
+    const [possibleMoves, setPossibleMoves] = useState([]);
 
     useEffect(() => {
         //TODO: Can I just send the entire chess object?
         socket
             .on('start', (chessObject, board, color) => {
-                
                 setBoard(board);
-                console.log('board', board);
                 switch (color) {
                     case colors.BLACK:
                         setColor(colors.BLACK);
@@ -120,16 +94,51 @@ export const Board = () => {
                 setBoard(board);
                 setMyTurn(true);
             })
+            .on('possibleMoves', (possibleMoves) => {
+                setPossibleMoves(possibleMoves);
+            })
             .on('invalidMove', () => {
                 alert('invalid move');
                 setMyTurn(true);
             });
     }, []);
 
+    const getColumnLetter = (column) => {
+        //TODO: Switcheroo if black?
+        switch (column) {
+            case 0:
+                return 'a';
+            case 1:
+                return 'b';
+            case 2:
+                return 'c';
+            case 3:
+                return 'd';
+            case 4:
+                return 'e';
+            case 5:
+                return 'f';
+            case 6:
+                return 'g';
+            case 7:
+                return 'h';
+        }
+    };
+
+    const getRowFromIndex = (index) => {
+        //If I'm black, it should already be correct if rendered right.
+        if (color === colors.BLACK) {
+            return index;
+        }
+
+        return 7 - index;
+    };
+
+    const getSquare = (column, row) => {
+        return getColumnLetter(column) + (row + 1);
+    };
     const choosePiece = (rowIndex, columnIndex) => {
-        //Validate
         if (!myTurn) {
-            //TODO: do a small notification here.
             console.log('not your turn');
             return false;
         }
@@ -141,27 +150,15 @@ export const Board = () => {
 
         if (piece.color !== color) {
             //TODO: not my piece, do a notification
-            console.log(piece);
             console.log('not your piece');
             return false;
         }
 
         setChosenTile({ column: columnIndex, row: rowIndex });
 
-        //TODO: Get valid moves chess.moves({from: a8, to: a2})
-        const square = getSquare(columnIndex, rowIndex);
-        socket.emit("choose", square);
-        /* 
-        const tile = currentGame.board.getTile(columnIndex + 1, rowIndex + 1);
-        console.log('tile', tile);
-        const moves = currentGame.rules
-            .findValidMoves(currentGame, tile)
-            .map((move) => {
-                const toRow = move.to.y;
-                const toColumn = move.to.x;
-                return { toRow, toColumn };
-            });
-        setValidMoves(moves); */
+        const square = getSquare(columnIndex, getRowFromIndex(rowIndex));
+        socket.emit('choose', square);
+
         return true;
     };
 
@@ -202,11 +199,9 @@ export const Board = () => {
     };
 
     const getTileColor = (row, column) => {
-        if (
-            validMoves.some(
-                (move) => move.toRow - 1 === row && move.toColumn - 1 === column
-            )
-        ) {
+        let tileInNotation = getColumnLetter(column) + getRowFromIndex(row - 1);
+        console.log(tileInNotation);
+        if (possibleMoves.some((move) => move.to === tileInNotation)) {
             return 'red';
         }
         return shouldBeColorX(row, column) ? 'grey' : 'silver';
@@ -214,7 +209,7 @@ export const Board = () => {
 
     return (
         <StyledBoard className="boardContainer">
-            {[...board].reverse().map((row, rowIndex) => {
+            {board.map((row, rowIndex) => {
                 return row.map((tile, columnIndex) => {
                     return (
                         <div
