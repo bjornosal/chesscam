@@ -16,7 +16,7 @@ const StyledBoard = styled.div`
 const colors = {
     BLACK: 'b',
     WHITE: 'w',
-    NONE: "none"
+    NONE: 'none',
 };
 
 export const Board = () => {
@@ -29,17 +29,16 @@ export const Board = () => {
     useEffect(() => {
         //TODO: Can I just send the entire chess object?
         socket
-            .on('start', (board, color) => {
-                console.log('what color am I:', color);
+            .on('start', (newBoard, color) => {
                 switch (color) {
                     case colors.BLACK:
                         setColor(colors.BLACK);
-                        setBoard([...board].reverse());
+                        setBoard(reverseBoard(newBoard));
                         setMyTurn(false);
                         break;
                     case colors.WHITE:
                         setColor(colors.WHITE);
-                        setBoard(board);
+                        setBoard(newBoard);
                         setMyTurn(true);
                         break;
                     default:
@@ -47,20 +46,22 @@ export const Board = () => {
                 }
             })
             .on('successMove', (newBoard) => {
-                console.log(newBoard)
-                setBoard(color === colors.WHITE ? newBoard : [...newBoard].reverse());
+                // const reversedBoard = [...newBoard].reverse();
+                setBoard(
+                    color === colors.WHITE ? newBoard : reverseBoard(newBoard)
+                );
+
                 setMyTurn(false);
                 setPossibleMoves([]);
             })
             .on('opponentMove', (newBoard) => {
-                console.log('that was a move');
-                console.log(newBoard)
-                console.log("reversed", [...newBoard].reverse())
-                console.log("COLOR:", color); 
-                console.log("AM I WHITE: ", color === colors.WHITE)
-                const reversedBoard = [...newBoard].reverse()
-                setBoard(color === colors.WHITE ? newBoard : reversedBoard);
+                // const reversedBoard = [...newBoard].reverse();
+                setBoard(
+                    color === colors.WHITE ? newBoard : reverseBoard(newBoard)
+                );
                 setMyTurn(true);
+                console.log(newBoard);
+                console.log(reverseBoard(newBoard));
             })
             .on('possibleMoves', (possibleMoves) => {
                 setPossibleMoves(possibleMoves.map((move) => move.to));
@@ -69,7 +70,11 @@ export const Board = () => {
                 alert('Server says: invalid move');
                 setMyTurn(true);
             });
-    }, []);
+    }, [color]);
+
+    const reverseBoard = (board) => {
+        return [...board].reverse().map((row) => [...row].reverse());
+    };
 
     const getColumnLetter = (column) => {
         //TODO: Switcheroo if black?
@@ -133,11 +138,11 @@ export const Board = () => {
             return false;
         }
 
-        if(color === colors.BLACK) {
-            console.log(rowIndex, columnIndex)
+        if (color === colors.BLACK) {
+            console.log(rowIndex, columnIndex);
             console.log(board[rowIndex][columnIndex]);
-        } 
-        console.log(rowIndex, columnIndex)
+        }
+        console.log(rowIndex, columnIndex);
         const piece = board[rowIndex][columnIndex];
         if (piece === null) {
             return false;
@@ -187,8 +192,11 @@ export const Board = () => {
 
         console.log(chosenTile);
         console.log(columnIndex, rowIndex);
-        console.log("from: ", getTileInNotation(chosenTile.column, chosenTile.row))
-        console.log("to: ", tileInNotation)
+        console.log(
+            'from: ',
+            getTileInNotation(chosenTile.column, chosenTile.row)
+        );
+        console.log('to: ', tileInNotation);
         socket.emit('move', {
             from: getTileInNotation(chosenTile.column, chosenTile.row),
             to: tileInNotation,
@@ -213,7 +221,6 @@ export const Board = () => {
         }
         return shouldBeColorX(row, column) ? 'grey' : 'silver';
     };
-    console.log("My color is: ", color)
     return (
         <StyledBoard className="boardContainer">
             {board.map((row, rowIndex) => {
