@@ -9,6 +9,8 @@ import {
 } from "../util/BoardUtil";
 import { Piece } from "./Piece";
 import { PromotionPopup } from "./PromotionPopup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledBoard = styled.div`
   width: 400px;
@@ -29,7 +31,6 @@ export const Board = () => {
   const [fromTile, setFromTile] = useState("");
   const [toTile, setToTile] = useState("");
   const [showPromotionPopup, setShowPromotionPopup] = useState(false);
-
   useEffect(() => {
     socket
       .on("start", (newBoard, color) => {
@@ -71,7 +72,9 @@ export const Board = () => {
         );
       })
       .on("invalidMove", () => {
-        alert("Server says: invalid move");
+        toast.info("Oops. Der var det noe som gikk galt!", {
+          autoClose: 5000,
+        });
         setMyTurn(true);
       });
   }, [color]);
@@ -82,7 +85,9 @@ export const Board = () => {
 
   const choosePiece = (rowIndex, columnIndex) => {
     if (!myTurn) {
-      console.log("not your turn");
+      toast.info("Ikke din tur helt enda.", {
+        autoClose: 3000,
+      });
       return false;
     }
 
@@ -92,7 +97,9 @@ export const Board = () => {
     }
 
     if (piece.color !== color) {
-      console.log("not your piece");
+      toast.info("Det er vel ikke din brikke? ♟️", {
+        autoClose: 3000,
+      });
       return false;
     }
 
@@ -112,13 +119,17 @@ export const Board = () => {
 
   const doClick = (rowIndex, columnIndex) => {
     if (isGameOver) {
-      console.log("The game is over.");
+      toast.info("Spillet er dessverre over nå! ♟️", {
+        autoClose: 3000,
+      });
       return false;
     }
 
     if (!myTurn) {
       //TODO: do a small notification here.
-      console.log("not your turn");
+      toast.info("Det er ikke din tur, smør deg med tålmodighet! ", {
+        autoClose: 3000,
+      });
       return false;
     }
     let didChoosePiece = choosePiece(rowIndex, columnIndex);
@@ -132,7 +143,10 @@ export const Board = () => {
 
     let toTile = getTileInNotation(columnIndex, rowIndex, color);
     if (!possibleMoves.some((move) => move.to === toTile)) {
-      console.log("Not a valid move.");
+      //TODO: Localization
+      toast.info("Det er ikke et gyldig trekk", {
+        autoClose: 3000,
+      });
       return;
     }
 
@@ -153,6 +167,17 @@ export const Board = () => {
 
   return (
     <div className="gameContainer">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <PromotionPopup
         open={showPromotionPopup}
         color={color}

@@ -18,13 +18,11 @@ export const Home = () => {
   useEffect(() => {
     socket
       .on("init", ({ id: clientId }) => {
-        console.log("init");
         document.title = `${clientId} - Video`;
         setClientId(clientId);
       })
       .on("request", ({ from: callFrom }) => {
         setCallModalActive(true);
-        console.log("from: ", callFrom);
         setCallFrom(callFrom);
       })
       .on("call", (data) => {
@@ -36,7 +34,6 @@ export const Home = () => {
         }
       })
       .on("end", () => {
-        console.log("Ending");
         endCall();
       })
       .emit("init");
@@ -77,6 +74,7 @@ export const Home = () => {
 
   return (
     <div>
+        <Board />
       {(!callWindowActive && (
         <StartGamePage startCall={startCall} clientId={clientId} />
       )) ||

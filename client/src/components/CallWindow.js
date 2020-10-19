@@ -17,8 +17,6 @@ const StyledCallWindow = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  /* opacity: ${(props) => (props.active ? 1 : 0)}; */
-  /* z-index: ${(props) => (props.active ? "auto" : -1)}; */
 `;
 
 const getButtonClass = (icon, enabled) => {
@@ -49,10 +47,6 @@ function CallWindow({
       mediaDevice.toggle("Audio", audio);
     }
   });
-
-  const startGame = () => {
-    socket.emit("start");
-  };
 
   /**
    * Turn on/off a media device

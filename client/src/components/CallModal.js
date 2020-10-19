@@ -16,7 +16,6 @@ const StyledCallModal = styled.div`
   z-index: ${(props) => (props.active ? 9999 : "")};
 `;
 
-// TODO: Rewrite to aria friendly modal
 function CallModal({ status, callFrom, startCall, rejectCall }) {
   const acceptWithVideo = (video) => {
     const config = { audio: true, video };
