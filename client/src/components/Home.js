@@ -79,7 +79,7 @@ export const Home = () => {
     return (
         <div>
             <Board />
-            {/* <PromotionPopup color="w" open={true} /> */}
+            <PromotionPopup color="w" open={true} />
             {(!callWindowActive && (
                 <StartGamePage startCall={startCall} clientId={clientId} />
             )) ||
