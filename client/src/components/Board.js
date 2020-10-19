@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import socket from '../socket/socket';
 import styled from 'styled-components';
-import { Chess } from 'chess.js';
-// const { Chess } = require('chessjs')
 
 const StyledBoard = styled.div`
     width: 400px;
@@ -25,6 +23,7 @@ export const Board = () => {
     const [color, setColor] = useState(colors.NONE);
     const [myTurn, setMyTurn] = useState(true);
     const [possibleMoves, setPossibleMoves] = useState([]);
+    const [isGameOver, setIsGameOver] = useState([]);
 
     useEffect(() => {
         //TODO: Can I just send the entire chess object?
@@ -45,20 +44,20 @@ export const Board = () => {
                         alert('Biip biip. Error. No comprende.');
                 }
             })
-            .on('successMove', (newBoard) => {
-                // const reversedBoard = [...newBoard].reverse();
+            .on('successMove', (newBoard, isGameOver) => {
                 setBoard(
                     color === colors.WHITE ? newBoard : reverseBoard(newBoard)
                 );
 
+                setIsGameOver(isGameOver);
                 setMyTurn(false);
                 setPossibleMoves([]);
             })
-            .on('opponentMove', (newBoard) => {
-                // const reversedBoard = [...newBoard].reverse();
+            .on('opponentMove', (newBoard, isGameOver) => {
                 setBoard(
                     color === colors.WHITE ? newBoard : reverseBoard(newBoard)
                 );
+                setIsGameOver(isGameOver);
                 setMyTurn(true);
             })
             .on('possibleMoves', (possibleMoves) => {
@@ -178,8 +177,6 @@ export const Board = () => {
             return;
         }
 
-        //Now i should have a chosen piece.
-        //DO MOVE
         let tileInNotation = getTileInNotation(columnIndex, rowIndex);
         if (!possibleMoves.some((move) => move.to === tileInNotation)) {
             console.log('Not a valid move.');
@@ -223,6 +220,7 @@ export const Board = () => {
 
     return (
         <StyledBoard className="boardContainer">
+            {isGameOver && <div>Spillet er ferdig! </div>}
             {board.map((row, rowIndex) => {
                 return row.map((tile, columnIndex) => {
                     return (

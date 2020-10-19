@@ -77,19 +77,19 @@ export const Home = () => {
 
     return (
         <div>
-            
-            <Board />
-            <StartGamePage startCall={startCall} clientId={clientId} />
-            {Object.keys(config).length !== 0 && (
-                <CallWindow
-                    active={callWindowActive}
-                    localSrc={localSource}
-                    peerSrc={peerSource}
-                    config={config}
-                    mediaDevice={pc.mediaDevice}
-                    endCall={endCall}
-                />
-            )}
+            {(!callWindowActive && (
+                <StartGamePage startCall={startCall} clientId={clientId} />
+            )) ||
+                (Object.keys(config).length !== 0 && (
+                    <CallWindow
+                        active={callWindowActive}
+                        localSrc={localSource}
+                        peerSrc={peerSource}
+                        config={config}
+                        mediaDevice={pc.mediaDevice}
+                        endCall={endCall}
+                    />
+                ))}
             <CallModal
                 status={callModalActive}
                 startCall={startCall}
