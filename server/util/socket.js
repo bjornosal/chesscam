@@ -10,7 +10,7 @@ const colors = {
 
 function initSocket(socket) {
     let id;
-    //TODO: Having troubles changing turns. 
+    //TODO: Having troubles changing turns.
     //This issue is because the players are not using the same instance of the chess game.
     socket
         .on('init', async () => {
@@ -44,11 +44,8 @@ function initSocket(socket) {
             }
             socket.emit('start', game.board(), colors.BLACK);
             opponent.emit('start', game.board(), colors.WHITE);
-            //TODO: Remove this line and uncomment above
-            // socket.emit('start', chess.board(), colors.WHITE);
         })
         .on('choose', (tile) => {
-
             let game = rooms.get(socket.id).game;
             socket.emit(
                 'possibleMoves',
@@ -63,9 +60,10 @@ function initSocket(socket) {
                 socket.emit('invalidMove');
             } else {
                 const receiver = rooms.get(socket.id).opponent;
-                socket.emit('successMove', game.board());
+                const isGameOver = game.game_over();
+                socket.emit('successMove', game.board(), isGameOver);
                 if (receiver) {
-                    receiver.emit('opponentMove', game.board());
+                    receiver.emit('opponentMove', game.board(), isGameOver);
                 }
             }
         })
