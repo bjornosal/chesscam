@@ -74,7 +74,6 @@ export const Home = () => {
 
   return (
     <div>
-        <Board />
       {(!callWindowActive && (
         <StartGamePage startCall={startCall} clientId={clientId} />
       )) ||

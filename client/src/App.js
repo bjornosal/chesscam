@@ -22,7 +22,6 @@ library.add(
 function App() {
   return (
     <div className="App">
-      <h1>Hei mormor</h1>
       <Home />
     </div>
   );

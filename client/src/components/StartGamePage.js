@@ -2,6 +2,35 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faPhone } from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
+
+const StyledIdContainer = styled.div`
+  width: 70vw;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25vh;
+  background-color: var(--primary-color);
+`;
+
+const StyledFriendIdContainer = styled.div`
+  width: 40vw;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
+  background-color: var(--secondary-color);
+`;
+
+const StyledInput = styled.input`
+  width: 2em;
+  border: none;
+  font-size: 3em;
+  text-align: ${(props) => props.align};
+`;
+
 const StartGamePage = ({ startCall, clientId }) => {
   const [friendID, setFriendID] = useState(null);
 
@@ -13,47 +42,81 @@ const StartGamePage = ({ startCall, clientId }) => {
     const config = { audio: true, video };
     return () => friendID && startCall(true, friendID, config);
   };
-
   return (
     <div className="container main-window">
-      <div>
-        <h3>
-          Din id er:
-          <input
-            type="text"
-            className="txt-clientId"
-            value={clientId}
-            readOnly
-          />
-        </h3>
-        <h4>Kom igang med å ringe din besteforelder/ditt barnebarn</h4>
-      </div>
-      <div>
+      <h1>Velkomsthilsen</h1>
+      <StyledIdContainer>
+        <StyledInput
+          type="text"
+          className="clientId"
+          value={clientId}
+          readOnly
+          align={"right"}
+        />
+        -
+        <StyledInput
+          type="text"
+          className="clientId"
+          value={clientId}
+          readOnly
+          align={"center"}
+        />
+        -
+        <StyledInput
+          type="text"
+          className="clientId"
+          value={clientId}
+          readOnly
+          align={"left"}
+        />
+      </StyledIdContainer>
+
+      <StyledFriendIdContainer>
         <input
           type="text"
-          className="txt-clientId"
+          className="clientId"
           spellCheck={false}
-          placeholder="Din mormors ID"
+          placeholder="Bestemors id"
           onChange={(event) => {
             setFriendID(event.target.value);
           }}
         />
-        <div>
-          <button
-            type="button"
-            className=" fa fa-video-camera"
-            onClick={callWithVideo(true)}
-          >
-            <FontAwesomeIcon icon={faVideo} />
-          </button>
-          <button
-            type="button"
-            className=" fa fa-phone"
-            onClick={callWithVideo(false)}
-          >
-            <FontAwesomeIcon icon={faPhone} />
-          </button>
-        </div>
+        -
+        <input
+          type="text"
+          className="clientId"
+          spellCheck={false}
+          placeholder="Bestemors id"
+          onChange={(event) => {
+            setFriendID(event.target.value);
+          }}
+        />
+        -
+        <input
+          type="text"
+          className="clientId"
+          spellCheck={false}
+          placeholder="Bestemors id"
+          onChange={(event) => {
+            setFriendID(event.target.value);
+          }}
+        />
+      </StyledFriendIdContainer>
+      <div>
+        <button
+          type="button"
+          className=" fa fa-video-camera"
+          onClick={callWithVideo(true)}
+        >
+          <FontAwesomeIcon icon={faVideo} />
+        </button>
+        <button
+          type="button"
+          className=" fa fa-phone"
+          onClick={callWithVideo(false)}
+        >
+          <FontAwesomeIcon icon={faPhone} />
+        </button>
       </div>
     </div>
   );
