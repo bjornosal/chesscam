@@ -28,7 +28,7 @@ export const Board = () => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [fromTile, setFromTile] = useState('');
   const [toTile, setToTile] = useState('');
-  const [showPromotionPopup, setShowPromotionPopup] = useState(False);
+  const [showPromotionPopup, setShowPromotionPopup] = useState(false);
 
   useEffect(() => {
     socket
@@ -104,7 +104,7 @@ export const Board = () => {
     return true;
   };
 
-  const showPromotionPopup = (fromTile, toTile) => {
+  const initPromotionPopup = (fromTile, toTile) => {
     setFromTile(fromTile);
     setToTile(toTile);
     setShowPromotionPopup(true);
@@ -141,8 +141,7 @@ export const Board = () => {
         (move) => move.to === toTile && move.promotion !== undefined
       )
     ) {
-      console.log('This is a promotion! Show promotion popup');
-
+      initPromotionPopup(fromTile, toTile);
       return;
     }
 

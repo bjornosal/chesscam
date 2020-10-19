@@ -33,8 +33,21 @@ export const PromotionPopup = ({ color, open, fromTile, toTile }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} ariaHideApp={true}>
-      <p>Velg din brikke!</p>
+    <Modal
+      isOpen={isOpen}
+      ariaHideApp={true}
+      style={{
+        overlay: {},
+        content: {
+			border: '1px solid #ccc', background: '#fff',
+			overflow: 'auto', WebkitOverflowScrolling: 'touch',
+			borderRadius: '4px', outline: 'none', padding: '20px',
+			top: '50%', left: '50%', right: 'auto', bottom: 'auto',
+			marginRight: '-50%', transform: 'translate(-50%, -50%)',
+		  }
+      }}
+    >
+      <div>Velg din brikke!</div>
       <PieceContainer>
         <Tile color="grey" onClick={() => choosePromotion('p')}>
           <Piece type="p" color={color} />
