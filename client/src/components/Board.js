@@ -7,6 +7,7 @@ import {
     getSquare,
     colors,
 } from '../util/BoardUtil';
+import { Piece } from './Piece';
 
 const StyledBoard = styled.div`
     width: 400px;
@@ -14,7 +15,7 @@ const StyledBoard = styled.div`
     margin: 20px;
     display: grid;
     grid-template: repeat(8, 1fr) / repeat(8, 1fr);
-    grid-gap: 1px;
+    border: 1px solid #000;
 `;
 
 export const Board = () => {
@@ -88,7 +89,6 @@ export const Board = () => {
         }
 
         if (piece.color !== color) {
-            //TODO: not my piece, do a notification
             console.log('not your piece');
             return false;
         }
@@ -159,14 +159,19 @@ export const Board = () => {
                                 style={{
                                     backgroundColor: getTileColor(
                                         rowIndex,
-                                        columnIndex
+                                        columnIndex,
+                                        possibleMoves
                                     ),
                                     color:
                                         tile?.color === 'b' ? 'black' : 'white',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
                                 }}
                                 onClick={() => doClick(rowIndex, columnIndex)}
                             >
-                                {tile?.type || ''}
+                                <Piece type={tile?.type} />
                             </div>
                         );
                     });

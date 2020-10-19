@@ -5,6 +5,7 @@ import CallModal from './CallModal';
 import StartGamePage from './StartGamePage';
 import socket from '../socket/socket';
 import { PromotionPopup } from './PromotionPopup';
+import { Board } from './Board';
 
 let pc = {};
 export const Home = () => {
@@ -77,7 +78,8 @@ export const Home = () => {
 
     return (
         <div>
-            <PromotionPopup color="w" open={true} />
+            <Board />
+            {/* <PromotionPopup color="w" open={true} /> */}
             {(!callWindowActive && (
                 <StartGamePage startCall={startCall} clientId={clientId} />
             )) ||

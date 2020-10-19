@@ -54,6 +54,8 @@ export const getColumnLetter = (column, color) => {
                 return 'g';
             case 7:
                 return 'h';
+            default:
+                return '';
         }
     } else {
         switch (column) {
@@ -73,6 +75,8 @@ export const getColumnLetter = (column, color) => {
                 return 'b';
             case 7:
                 return 'a';
+            default:
+                return '';
         }
     }
 };
