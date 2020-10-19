@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faVideo, faPhone } from '@fortawesome/free-solid-svg-icons';
-import styled from 'styled-components';
+import React from "react";
+import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVideo, faPhone } from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
 
 const StyledCallModal = styled.div`
   position: absolute;
@@ -12,8 +12,8 @@ const StyledCallModal = styled.div`
   top: calc(50vh - 60px);
   text-align: center;
   background-color: blue;
-  display: ${(props) => (props.active ? 'block' : 'none')};
-  z-index: ${(props) => (props.active ? 9999 : '')};
+  display: ${(props) => (props.active ? "block" : "none")};
+  z-index: ${(props) => (props.active ? 9999 : "")};
 `;
 
 // TODO: Rewrite to aria friendly modal
@@ -34,7 +34,7 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
       <button
         type="button"
         onClick={acceptWithVideo(false)}
-        style={{ backgroundColor: 'green' }}
+        style={{ backgroundColor: "green" }}
       >
         <FontAwesomeIcon icon={faPhone} />
       </button>
@@ -42,7 +42,7 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
         type="button"
         className="hangup"
         onClick={rejectCall}
-        style={{ backgroundColor: 'red' }}
+        style={{ backgroundColor: "red" }}
       >
         <FontAwesomeIcon icon={faPhone} />
       </button>

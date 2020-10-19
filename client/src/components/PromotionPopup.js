@@ -1,10 +1,10 @@
-import Modal from 'react-modal';
-import React, { useState } from 'react';
-import socket from '../socket/socket';
-import { Piece } from './Piece';
-import styled from 'styled-components';
+import Modal from "react-modal";
+import React, { useState } from "react";
+import socket from "../socket/socket";
+import { Piece } from "./Piece";
+import styled from "styled-components";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 const PieceContainer = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ export const PromotionPopup = ({ color, open, fromTile, toTile }) => {
   const [isOpen, setIsOpen] = useState(open);
 
   const choosePromotion = (type) => {
-    socket.emit('move', {
+    socket.emit("move", {
       from: fromTile,
       to: toTile,
       promotion: type,
@@ -39,29 +39,37 @@ export const PromotionPopup = ({ color, open, fromTile, toTile }) => {
       style={{
         overlay: {},
         content: {
-			border: '1px solid #ccc', background: '#fff',
-			overflow: 'auto', WebkitOverflowScrolling: 'touch',
-			borderRadius: '4px', outline: 'none', padding: '20px',
-			top: '50%', left: '50%', right: 'auto', bottom: 'auto',
-			marginRight: '-50%', transform: 'translate(-50%, -50%)',
-		  }
+          border: "1px solid #ccc",
+          background: "#fff",
+          overflow: "auto",
+          WebkitOverflowScrolling: "touch",
+          borderRadius: "4px",
+          outline: "none",
+          padding: "20px",
+          top: "50%",
+          left: "50%",
+          right: "auto",
+          bottom: "auto",
+          marginRight: "-50%",
+          transform: "translate(-50%, -50%)",
+        },
       }}
     >
       <div>Velg din brikke!</div>
       <PieceContainer>
-        <Tile color="grey" onClick={() => choosePromotion('p')}>
+        <Tile color="grey" onClick={() => choosePromotion("p")}>
           <Piece type="p" color={color} />
         </Tile>
-        <Tile color="beige" onClick={() => choosePromotion('q')}>
+        <Tile color="beige" onClick={() => choosePromotion("q")}>
           <Piece type="q" color={color} />
         </Tile>
-        <Tile color="grey" onClick={() => choosePromotion('n')}>
+        <Tile color="grey" onClick={() => choosePromotion("n")}>
           <Piece type="n" color={color} />
         </Tile>
-        <Tile color="beige" onClick={() => choosePromotion('b')}>
+        <Tile color="beige" onClick={() => choosePromotion("b")}>
           <Piece type="b" color={color} />
         </Tile>
-        <Tile color="grey" onClick={() => choosePromotion('r')}>
+        <Tile color="grey" onClick={() => choosePromotion("r")}>
           <Piece type="r" color={color} />
         </Tile>
       </PieceContainer>

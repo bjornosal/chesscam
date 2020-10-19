@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import socket from '../socket/socket';
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import socket from "../socket/socket";
+import styled from "styled-components";
 import {
   getTileInNotation,
   getTileColor,
   getSquare,
   colors,
-} from '../util/BoardUtil';
-import { Piece } from './Piece';
-import { PromotionPopup } from './PromotionPopup';
+} from "../util/BoardUtil";
+import { Piece } from "./Piece";
+import { PromotionPopup } from "./PromotionPopup";
 
 const StyledBoard = styled.div`
   width: 400px;
@@ -26,13 +26,13 @@ export const Board = () => {
   const [myTurn, setMyTurn] = useState(true);
   const [possibleMoves, setPossibleMoves] = useState([]);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [fromTile, setFromTile] = useState('');
-  const [toTile, setToTile] = useState('');
+  const [fromTile, setFromTile] = useState("");
+  const [toTile, setToTile] = useState("");
   const [showPromotionPopup, setShowPromotionPopup] = useState(false);
 
   useEffect(() => {
     socket
-      .on('start', (newBoard, color) => {
+      .on("start", (newBoard, color) => {
         switch (color) {
           case colors.BLACK:
             setColor(colors.BLACK);
@@ -46,32 +46,32 @@ export const Board = () => {
 
             break;
           default:
-            alert('Biip biip. Error. No comprende.');
+            alert("Biip biip. Error. No comprende.");
         }
       })
-      .on('successMove', (newBoard, isGameOver) => {
+      .on("successMove", (newBoard, isGameOver) => {
         setBoard(color === colors.WHITE ? newBoard : reverseBoard(newBoard));
 
         setIsGameOver(isGameOver);
         setMyTurn(false);
         setPossibleMoves([]);
-        setFromTile('');
-        setToTile('');
+        setFromTile("");
+        setToTile("");
       })
-      .on('opponentMove', (newBoard, isGameOver) => {
+      .on("opponentMove", (newBoard, isGameOver) => {
         setBoard(color === colors.WHITE ? newBoard : reverseBoard(newBoard));
         setIsGameOver(isGameOver);
         setMyTurn(true);
       })
-      .on('possibleMoves', (possibleMoves) => {
+      .on("possibleMoves", (possibleMoves) => {
         setPossibleMoves(
           possibleMoves.map((move) => {
             return { to: move.to, promotion: move.promotion };
           })
         );
       })
-      .on('invalidMove', () => {
-        alert('Server says: invalid move');
+      .on("invalidMove", () => {
+        alert("Server says: invalid move");
         setMyTurn(true);
       });
   }, [color]);
@@ -82,7 +82,7 @@ export const Board = () => {
 
   const choosePiece = (rowIndex, columnIndex) => {
     if (!myTurn) {
-      console.log('not your turn');
+      console.log("not your turn");
       return false;
     }
 
@@ -92,14 +92,14 @@ export const Board = () => {
     }
 
     if (piece.color !== color) {
-      console.log('not your piece');
+      console.log("not your piece");
       return false;
     }
 
     setChosenTile({ column: columnIndex, row: rowIndex });
     const square = getSquare(columnIndex, rowIndex, color);
 
-    socket.emit('choose', square);
+    socket.emit("choose", square);
 
     return true;
   };
@@ -112,13 +112,13 @@ export const Board = () => {
 
   const doClick = (rowIndex, columnIndex) => {
     if (isGameOver) {
-      console.log('The game is over.');
+      console.log("The game is over.");
       return false;
     }
 
     if (!myTurn) {
       //TODO: do a small notification here.
-      console.log('not your turn');
+      console.log("not your turn");
       return false;
     }
     let didChoosePiece = choosePiece(rowIndex, columnIndex);
@@ -132,7 +132,7 @@ export const Board = () => {
 
     let toTile = getTileInNotation(columnIndex, rowIndex, color);
     if (!possibleMoves.some((move) => move.to === toTile)) {
-      console.log('Not a valid move.');
+      console.log("Not a valid move.");
       return;
     }
 
@@ -145,7 +145,7 @@ export const Board = () => {
       return;
     }
 
-    socket.emit('move', {
+    socket.emit("move", {
       from: getTileInNotation(chosenTile.column, chosenTile.row, color),
       to: toTile,
     });
@@ -161,7 +161,7 @@ export const Board = () => {
       />
       {isGameOver && (
         <div className="finishedGameModal">
-          Spillet er ferdig! Du {myTurn ? 'tapte' : 'vant'}.
+          Spillet er ferdig! Du {myTurn ? "tapte" : "vant"}.
         </div>
       )}
       <StyledBoard className="boardContainer">
@@ -169,18 +169,18 @@ export const Board = () => {
           return row.map((tile, columnIndex) => {
             return (
               <div
-                key={rowIndex + '-' + columnIndex}
+                key={rowIndex + "-" + columnIndex}
                 style={{
                   backgroundColor: getTileColor(
                     rowIndex,
                     columnIndex,
                     possibleMoves
                   ),
-                  color: tile?.color === 'b' ? 'black' : 'white',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  color: tile?.color === "b" ? "black" : "white",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
                 onClick={() => doClick(rowIndex, columnIndex)}
               >
