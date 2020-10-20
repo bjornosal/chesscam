@@ -131,7 +131,6 @@ const StartGamePage = ({ startCall, clientId }) => {
             value={clientId}
             readOnly
             align={"center"}
-            // width={clientId.toString().length}
           />
         </StyledIdContainer>
 
@@ -142,7 +141,6 @@ const StartGamePage = ({ startCall, clientId }) => {
             className="clientId"
             spellCheck={false}
             placeholder="Bestemors id"
-            // width={friendID.toString().length}
             onChange={(event) => {
               setFriendID(event.target.value);
             }}
