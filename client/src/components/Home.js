@@ -74,10 +74,10 @@ export const Home = () => {
 
   return (
     <div>
-      {(!callWindowActive && (
+      {/* {(!callWindowActive && (
         <StartGamePage startCall={startCall} clientId={clientId} />
       )) ||
-        (Object.keys(config).length !== 0 && (
+        (Object.keys(config).length !== 0 && ( */}
           <CallWindow
             active={callWindowActive}
             localSrc={localSource}
@@ -86,7 +86,7 @@ export const Home = () => {
             mediaDevice={pc.mediaDevice}
             endCall={endCall}
           />
-        ))}
+        {/* ))} */}
       <CallModal
         status={callModalActive}
         startCall={startCall}

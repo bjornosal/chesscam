@@ -11,12 +11,43 @@ import { Board } from "./Board";
 import socket from "../socket/socket";
 
 const StyledCallWindow = styled.div`
-  position: absolute;
-  background-color: #ffdab9;
-  top: 0;
-  left: 0;
+  background-color: var(--main-bg-color);
   width: 100vw;
   height: 100vh;
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+const GameContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const ChatContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const StyledPeerVideo = styled.video`
+  width: 25em;
+`;
+
+const MyVideo = styled.video`
+  width: 10em;
+  align-self: flex-end;
+`;
+
+const StyledCallButton = styled.button`
+  padding: 1em;
+  background-color: var(--secondary-color);
+  margin: 0.1em;
+`;
+
+const StyledGameButton = styled.button`
+  width: 40%;
+  align-self: center;
+  
 `;
 
 const getButtonClass = (icon, enabled) => {
@@ -65,44 +96,42 @@ function CallWindow({
 
   return (
     <StyledCallWindow active={active} className={"call-window"}>
-      <button type="button" onClick={() => socket.emit("start")}>
-        Start a chessgame
-      </button>
-      <Board />
-      <video
-        id="peerVideo"
-        ref={peerVideo}
-        autoPlay
-        style={{ width: "200px" }}
-      />
-      <video
-        id="localVideo"
-        ref={localVideo}
-        autoPlay
-        muted
-        style={{ width: "200px" }}
-      />
-      <div className="video-control">
-        <button
-          key="btnVideo"
-          type="button"
-          className={getButtonClass("fa-video-camera", video)}
-          onClick={() => toggleMediaDevice("video")}
-        >
-          <FontAwesomeIcon icon={faVideo} />
-        </button>
-        <button
-          key="btnAudio"
-          type="button"
-          className={getButtonClass("fa-microphone", audio)}
-          onClick={() => toggleMediaDevice("audio")}
-        >
-          <FontAwesomeIcon icon={faMicrophone} />
-        </button>
-        <button type="button" className="hangup" onClick={() => endCall(true)}>
-          <FontAwesomeIcon icon={faPhone} />
-        </button>
-      </div>
+      <GameContainer>
+        <Board />
+        <StyledGameButton type="button" onClick={() => socket.emit("start")}>
+          Start et spill!
+        </StyledGameButton>
+      </GameContainer>
+      <ChatContainer>
+        <StyledPeerVideo id="peerVideo" ref={peerVideo} autoPlay />
+        <MyVideo id="localVideo" ref={localVideo} autoPlay muted />
+        <div className="video-control">
+          <StyledCallButton
+            key="btnVideo"
+            type="button"
+            className={getButtonClass("fa-video-camera", video)}
+            onClick={() => toggleMediaDevice("video")}
+          >
+            <FontAwesomeIcon icon={faVideo} />
+          </StyledCallButton>
+          <StyledCallButton
+            key="btnAudio"
+            type="button"
+            className={getButtonClass("fa-microphone", audio)}
+            onClick={() => toggleMediaDevice("audio")}
+          >
+            <FontAwesomeIcon icon={faMicrophone} />
+          </StyledCallButton>
+          <StyledCallButton
+            type="button"
+            className="hangup"
+            onClick={() => endCall(true)}
+            style={{ backgroundColor: "red" }}
+          >
+            <FontAwesomeIcon icon={faPhone} />
+          </StyledCallButton>
+        </div>
+      </ChatContainer>
     </StyledCallWindow>
   );
 }
