@@ -2,12 +2,12 @@
   "name": "chesscam",
   "version": "1.0.0",
   "description": "Video using WebRTC through socket.io using node.js as delegator. Mostly reimplementation of https://github.com/nguymin4/react-videocall for setting up videocall.",
-  "main": "server/server.js",
+  "main": "server/index.js",
   "dependencies": {},
   "devDependencies": {},
   "scripts": {
-    "start": "cd  server && node server",
-    "dev": "cd server && nodemon server",
+    "start": "cd  server && node index",
+    "dev": "cd server && nodemon index",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {
