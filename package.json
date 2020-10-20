@@ -8,7 +8,7 @@
   "scripts": {
     "start": "cd  server && node index",
     "dev": "cd server && nodemon index",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd server && npm install && cd ../client && npm install && npm run build"
   },
   "repository": {
     "type": "git",
