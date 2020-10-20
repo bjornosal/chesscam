@@ -6,6 +6,7 @@ import {
   getTileColor,
   getSquare,
   colors,
+  getDefaultBoard,
 } from "../util/BoardUtil";
 import { Piece } from "./Piece";
 import { PromotionPopup } from "./PromotionPopup";
@@ -22,7 +23,7 @@ const StyledBoard = styled.div`
 `;
 
 export const Board = () => {
-  const [board, setBoard] = useState([]);
+  const [board, setBoard] = useState(getDefaultBoard());
   const [chosenTile, setChosenTile] = useState({ column: -1, row: -1 });
   const [color, setColor] = useState(colors.NONE);
   const [myTurn, setMyTurn] = useState(true);
@@ -34,6 +35,7 @@ export const Board = () => {
   useEffect(() => {
     socket
       .on("start", (newBoard, color) => {
+        console.log(newBoard);
         switch (color) {
           case colors.BLACK:
             setColor(colors.BLACK);
@@ -199,7 +201,8 @@ export const Board = () => {
                   backgroundColor: getTileColor(
                     rowIndex,
                     columnIndex,
-                    possibleMoves
+                    possibleMoves,
+                    color
                   ),
                   color: tile?.color === "b" ? "black" : "white",
                   display: "flex",

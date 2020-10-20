@@ -10,8 +10,7 @@ const colors = {
 
 function initSocket(socket) {
   let id;
-  //TODO: Having troubles changing turns.
-  //This issue is because the players are not using the same instance of the chess game.
+
   socket
     .on("init", async () => {
       id = await users.create(socket);

@@ -31,6 +31,7 @@ const ChatContainer = styled.div`
 
 const StyledPeerVideo = styled.video`
   width: 25em;
+  padding-bottom: 1em;
 `;
 
 const MyVideo = styled.video`
@@ -47,7 +48,6 @@ const StyledCallButton = styled.button`
 const StyledGameButton = styled.button`
   width: 40%;
   align-self: center;
-  
 `;
 
 const getButtonClass = (icon, enabled) => {
@@ -66,10 +66,14 @@ function CallWindow({
   const localVideo = useRef(null);
   const [video, setVideo] = useState(config.video);
   const [audio, setAudio] = useState(config.audio);
-
+  const [started, setStarted] = useState(false);
   useEffect(() => {
     if (peerVideo.current && peerSrc) peerVideo.current.srcObject = peerSrc;
     if (localVideo.current && localSrc) localVideo.current.srcObject = localSrc;
+
+    socket.on("start", () => {
+      setStarted(true);
+    });
   });
 
   useEffect(() => {
@@ -98,9 +102,11 @@ function CallWindow({
     <StyledCallWindow active={active} className={"call-window"}>
       <GameContainer>
         <Board />
-        <StyledGameButton type="button" onClick={() => socket.emit("start")}>
-          Start et spill!
-        </StyledGameButton>
+        {!started && (
+          <StyledGameButton type="button" onClick={() => socket.emit("start")}>
+            Start et spill!
+          </StyledGameButton>
+        )}
       </GameContainer>
       <ChatContainer>
         <StyledPeerVideo id="peerVideo" ref={peerVideo} autoPlay />
