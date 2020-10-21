@@ -60,11 +60,15 @@ export const Board = () => {
         setPossibleMoves([]);
         setFromTile("");
         setToTile("");
+        setChosenTile({ column: -1, row: -1 });
       })
       .on("opponentMove", (newBoard, isGameOver) => {
         setBoard(color === colors.WHITE ? newBoard : reverseBoard(newBoard));
         setIsGameOver(isGameOver);
         setMyTurn(true);
+        setFromTile("");
+        setToTile("");
+        setChosenTile({ column: -1, row: -1 });
       })
       .on("possibleMoves", (possibleMoves) => {
         setPossibleMoves(
@@ -98,6 +102,10 @@ export const Board = () => {
       return false;
     }
 
+    if (chosenTile.column !== -1 && piece.color !== color) {
+      return false;
+    }
+
     if (piece.color !== color) {
       toast.info("Det er vel ikke din brikke? ♟️", {
         autoClose: 3000,
@@ -128,12 +136,12 @@ export const Board = () => {
     }
 
     if (!myTurn) {
-      //TODO: do a small notification here.
       toast.info("Det er ikke din tur, smør deg med tålmodighet! ", {
         autoClose: 3000,
       });
       return false;
     }
+
     let didChoosePiece = choosePiece(rowIndex, columnIndex);
     if (didChoosePiece) {
       return;

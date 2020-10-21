@@ -17,7 +17,7 @@ export const shouldBeColorX = (row, column) => {
 export const getTileColor = (row, column, possibleMoves, color) => {
   let tileInNotation = getTileInNotation(column, row, color);
   if (possibleMoves.some((move) => move.to === tileInNotation)) {
-    return "red";
+    return "#6e8d71";
   }
   return shouldBeColorX(row, column) ? "grey" : "silver";
 };
