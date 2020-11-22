@@ -59,10 +59,11 @@ const StartPageContainer = styled.div`
   height: 40em;
   margin: auto;
   width: 60vw;
+  border-radius: 24px;
   background-color: var(--primary-color);
-  -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.4);
   @media only screen and (max-width: 768px) {
     height: 100vh;
     width: 100vw;
@@ -79,6 +80,7 @@ const StyledCallButton = styled.button`
   background-color: var(--secondary-color);
   margin: 0.1em;
   border: 2px solid #ccc;
+  border-radius: 24px;
   box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
   transition: 0.5s ease;
   :hover {
