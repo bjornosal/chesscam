@@ -8,7 +8,7 @@ class MediaDevice extends Emitter {
   /**
    * Start media devices and send stream
    */
-  start() {
+  async start() {
     const constraints = {
       video: {
         facingMode: "user",
@@ -16,7 +16,6 @@ class MediaDevice extends Emitter {
       },
       audio: true,
     };
-
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then((stream) => {
@@ -25,7 +24,8 @@ class MediaDevice extends Emitter {
       })
       .catch((err) => {
         if (err instanceof DOMException) {
-          alert("Cannot open webcam and/or microphone");
+        this.emit("stream");
+        alert("Cannot open webcam and/or microphone");
         } else {
           console.log(err);
         }

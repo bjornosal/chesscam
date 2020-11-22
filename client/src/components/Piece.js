@@ -33,6 +33,10 @@ export const Piece = ({ type }) => {
   return iconType === null ? (
     <Fragment />
   ) : (
-    <FontAwesomeIcon icon={iconType} size="2x" />
+    <FontAwesomeIcon
+      icon={iconType}
+      size="2x"
+      
+    />
   );
 };

@@ -31,7 +31,7 @@ class PeerConnection extends Emitter {
   start(isCaller, config) {
     this.mediaDevice
       .on("stream", (stream) => {
-        stream.getTracks().forEach((track) => {
+        stream?.getTracks().forEach((track) => {
           this.pc.addTrack(track, stream);
         });
         this.emit("localStream", stream);

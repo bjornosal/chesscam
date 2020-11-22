@@ -216,6 +216,8 @@ export const Board = () => {
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
+                  stroke: tile?.color === "b" ? "none" : "black",
+                  strokeWidth: tile?.color === "b" ? "none" : "25px",
                 }}
                 onClick={() => doClick(rowIndex, columnIndex)}
               >
