@@ -14,37 +14,60 @@ import socket from "../socket/socket";
 
 const StyledCallWindow = styled.div`
   background-color: var(--main-bg-color);
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   display: flex;
   justify-content: space-evenly;
+  @media only screen and (max-width: 768px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 const GameContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  width: 50%;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  width: 50%;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    flex-direction: column-reverse;
+  }
 `;
 
 const StyledPeerVideo = styled.video`
-  width: 25em;
+  width: 80%;
   padding-bottom: 1em;
   border: 1px solid rgba(0, 0, 0, 0.4);
   border-radius: 2px;
+  @media only screen and (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const MyVideo = styled.video`
-  width: 10em;
+  width: 30%;
   align-self: flex-end;
   border: 1px solid rgba(0, 0, 0, 0.4);
   margin: 1px;
+  margin-right: 10%;
   border-radius: 2px;
   background-color: rgba(0, 0, 0, 0.4);
+  @media only screen and (max-width: 768px) {
+    margin-right: 5%;
+    margin-bottom: -15.5%;
+    margin-top: 5%;
+  }
 `;
 
 const StyledCallButton = styled.button`

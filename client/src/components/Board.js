@@ -14,12 +14,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const StyledBoard = styled.div`
-  width: 400px;
-  height: 400px;
+  width: calc(90vh);
+  height: calc(90vh);
   margin: 20px;
   display: grid;
   grid-template: repeat(8, 1fr) / repeat(8, 1fr);
-  border: 1px solid #000;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  @media only screen and (max-width: 768px) {
+    width: calc(90vw);
+    height: calc(90vw);
+    margin-top: 40px;
+  }
 `;
 
 export const Board = () => {

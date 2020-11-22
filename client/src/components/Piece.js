@@ -1,5 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Fragment } from "react";
+import styled from "styled-components";
+
+const StyledPiece = styled(FontAwesomeIcon)`
+  transform: scale(3.5);
+  @media only screen and (max-width: 768px) {
+    
+    transform: scale(2);
+  }
+`;
 
 export const Piece = ({ type }) => {
   /**
@@ -33,10 +42,6 @@ export const Piece = ({ type }) => {
   return iconType === null ? (
     <Fragment />
   ) : (
-    <FontAwesomeIcon
-      icon={iconType}
-      size="2x"
-      
-    />
+    <StyledPiece icon={iconType}  />
   );
 };
