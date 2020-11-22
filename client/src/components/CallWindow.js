@@ -50,6 +50,7 @@ const StyledPeerVideo = styled.video`
   padding-bottom: 1em;
   border: 1px solid rgba(0, 0, 0, 0.4);
   border-radius: 2px;
+  background-color: rgba(0, 0, 0, 0.4);
   @media only screen and (max-width: 768px) {
     width: 90%;
   }
@@ -74,7 +75,8 @@ const MyVideo = styled.video`
 
 const StyledCallButton = styled.button`
   padding: 1em;
-  background-color: ${(props) => (props.active ? "var(--secondary-color)" : "red")};
+  background-color: ${(props) =>
+    props.active ? "var(--secondary-color)" : "red"};
   margin: 0.1em;
   border: 2px solid rgba(0, 0, 0, 0.4);
   border-radius: 2px;
@@ -162,7 +164,7 @@ function CallWindow({
             onClick={() => toggleMediaDevice("video")}
             active={video}
           >
-            <FontAwesomeIcon icon={video ? faVideo : faVideoSlash} />
+            <FontAwesomeIcon icon={video ? faVideo : faVideoSlash} style={{transform: "scale(2)"}}/>
           </StyledCallButton>
           <StyledCallButton
             key="btnAudio"
@@ -171,16 +173,15 @@ function CallWindow({
             onClick={() => toggleMediaDevice("audio")}
             active={audio}
           >
-            <FontAwesomeIcon icon={audio ? faMicrophone : faMicrophoneSlash} />
+            <FontAwesomeIcon icon={audio ? faMicrophone : faMicrophoneSlash} style={{transform: "scale(2)"}}/>
           </StyledCallButton>
           <StyledCallButton
             type="button"
             className="hangup"
             onClick={() => endCall(true)}
             style={{ backgroundColor: "red" }}
-            
           >
-            <FontAwesomeIcon icon={faPhone} />
+            <FontAwesomeIcon icon={faPhone} style={{transform: "scale(2)"}}/>
           </StyledCallButton>
         </div>
       </ChatContainer>

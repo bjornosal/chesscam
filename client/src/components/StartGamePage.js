@@ -5,18 +5,15 @@ import { faVideo, faPhone } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
 const StyledIdContainer = styled.div`
-  /* width: 80vw; */
   margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 25vh;
-  /* background-color: var(--primary-color); */
   @media only screen and (max-width: 768px) {
     flex-direction: column;
-    width: 80vw;
-    height: 30vh;
+    width: 100%;
+    font-size: 1em;
   }
 `;
 
@@ -35,7 +32,8 @@ const StyledFriendIdContainer = styled.div`
 const StyledInput = styled.input`
   /* TODO: Calculate width according to things */
   border: none;
-  font-size: 3em;
+  border-radius: 10px;
+  font-size: 2em;
   text-align: ${(props) => props.align};
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
@@ -47,10 +45,12 @@ const StyledInput = styled.input`
 `;
 
 const StyledLabel = styled.label`
-  color: #ffffff;
+  color: #000;
   font-size: 3rem;
   font-weight: bold;
-  text-shadow: white 0px 0px 2px;
+  @media only screen and (max-width: 768px) {
+    font-size: 2.1em;
+  }
 `;
 
 const StartPageContainer = styled.div`
@@ -65,8 +65,8 @@ const StartPageContainer = styled.div`
   -moz-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.4);
   box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.4);
   @media only screen and (max-width: 768px) {
-    height: 100vh;
-    width: 100vw;
+    height: 80vh;
+    width: 90vw;
   }
 `;
 
@@ -142,6 +142,7 @@ const StartGamePage = ({ startCall, clientId }) => {
             className="clientId"
             spellCheck={false}
             placeholder="Bestemors id"
+            autoCorrect={false}
             onChange={(event) => {
               setFriendID(event.target.value);
             }}

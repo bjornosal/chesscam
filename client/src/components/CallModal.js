@@ -49,12 +49,9 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
         } ringer`}</span>
       </p>
       <StyledIncomingCallButton type="button" onClick={acceptWithVideo(true)}>
-        <FontAwesomeIcon icon={faVideo} size="2x"/>
+        <FontAwesomeIcon icon={faVideo} size="2x" />
       </StyledIncomingCallButton>
-      <StyledIncomingCallButton
-        type="button"
-        onClick={acceptWithVideo(false)}
-      >
+      <StyledIncomingCallButton type="button" onClick={acceptWithVideo(false)}>
         <FontAwesomeIcon icon={faPhone} size="2x" />
       </StyledIncomingCallButton>
       <StyledIncomingCallButton
