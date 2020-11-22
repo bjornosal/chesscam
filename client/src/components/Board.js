@@ -62,13 +62,16 @@ export const Board = () => {
         setToTile("");
         setChosenTile({ column: -1, row: -1 });
       })
-      .on("opponentMove", (newBoard, isGameOver) => {
+      .on("opponentMove", (newBoard, isGameOver, isChecked) => {
         setBoard(color === colors.WHITE ? newBoard : reverseBoard(newBoard));
         setIsGameOver(isGameOver);
         setMyTurn(true);
         setFromTile("");
         setToTile("");
         setChosenTile({ column: -1, row: -1 });
+        if (isChecked) {
+          doToast("Du er satt i sjakk! 🙃");
+        }
       })
       .on("possibleMoves", (possibleMoves) => {
         setPossibleMoves(
@@ -78,9 +81,7 @@ export const Board = () => {
         );
       })
       .on("invalidMove", () => {
-        toast.info("Oops. Der var det noe som gikk galt!", {
-          autoClose: 5000,
-        });
+        doToast("Oops. Der var det noe som gikk galt!")
         setMyTurn(true);
       });
   }, [color]);
@@ -91,9 +92,7 @@ export const Board = () => {
 
   const choosePiece = (rowIndex, columnIndex) => {
     if (!myTurn) {
-      toast.info("Ikke din tur helt enda.", {
-        autoClose: 3000,
-      });
+      doToast("Ikke din tur helt enda.")
       return false;
     }
 
@@ -107,9 +106,7 @@ export const Board = () => {
     }
 
     if (piece.color !== color) {
-      toast.info("Det er vel ikke din brikke? ♟️", {
-        autoClose: 3000,
-      });
+      doToast("Det er vel ikke din brikke? ♟️")
       return false;
     }
 
@@ -121,6 +118,12 @@ export const Board = () => {
     return true;
   };
 
+  const doToast = (message) => {
+    toast.info(message, {
+      autoClose: 3000,
+    });
+  };
+
   const initPromotionPopup = (fromTile, toTile) => {
     setFromTile(fromTile);
     setToTile(toTile);
@@ -129,16 +132,12 @@ export const Board = () => {
 
   const doClick = (rowIndex, columnIndex) => {
     if (isGameOver) {
-      toast.info("Spillet er dessverre over nå! ♟️", {
-        autoClose: 3000,
-      });
+      doToast("Spillet er dessverre over nå! ♟️")
       return false;
     }
 
     if (!myTurn) {
-      toast.info("Det er ikke din tur, smør deg med tålmodighet! ", {
-        autoClose: 3000,
-      });
+      doToast("Det er ikke din tur, smør deg med tålmodighet! ")
       return false;
     }
 
@@ -154,9 +153,7 @@ export const Board = () => {
     let toTile = getTileInNotation(columnIndex, rowIndex, color);
     if (!possibleMoves.some((move) => move.to === toTile)) {
       //TODO: Localization
-      toast.info("Det er ikke et gyldig trekk", {
-        autoClose: 3000,
-      });
+      doToast("Det er ikke et gyldig trekk.")
       return;
     }
 
