@@ -43,6 +43,16 @@ const StyledCallButton = styled.button`
   padding: 1em;
   background-color: var(--secondary-color);
   margin: 0.1em;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.1);
+  transition: 0.5s ease;
+  :hover {
+    border: 2px solid var(--main-bg-color);
+    cursor: pointer;
+    box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.4);
+    transition: 0.5s ease;
+  }
 `;
 
 const StyledGameButton = styled.button`
