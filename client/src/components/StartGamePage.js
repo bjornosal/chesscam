@@ -33,7 +33,7 @@ const StyledInput = styled.input`
   /* TODO: Calculate width according to things */
   border: none;
   border-radius: 10px;
-  font-size: 2em;
+  font-size: 3em;
   text-align: ${(props) => props.align};
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
@@ -41,6 +41,7 @@ const StyledInput = styled.input`
   @media only screen and (max-width: 768px) {
     text-align: center;
     width: 80%;
+    font-size: 2em;
   }
 `;
 

@@ -74,7 +74,7 @@ const MyVideo = styled.video`
 `;
 
 const StyledCallButton = styled.button`
-  padding: 1em;
+  padding: 2em;
   background-color: ${(props) =>
     props.active ? "var(--secondary-color)" : "red"};
   margin: 0.1em;
@@ -87,6 +87,10 @@ const StyledCallButton = styled.button`
     cursor: pointer;
     box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.4);
     transition: 0.5s ease;
+  }
+
+  @media only screen and (max-width: 768px) {
+    padding: 1em;
   }
 `;
 
