@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faVideo,
+  faVideoSlash,
   faPhone,
   faMicrophone,
+  faMicrophoneSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { Board } from "./Board";
@@ -126,9 +128,10 @@ function CallWindow({
             key="btnVideo"
             type="button"
             className={getButtonClass("fa-video-camera", video)}
+
             onClick={() => toggleMediaDevice("video")}
           >
-            <FontAwesomeIcon icon={faVideo} />
+            <FontAwesomeIcon icon={video ? faVideo : faVideoSlash} />
           </StyledCallButton>
           <StyledCallButton
             key="btnAudio"
@@ -136,7 +139,7 @@ function CallWindow({
             className={getButtonClass("fa-microphone", audio)}
             onClick={() => toggleMediaDevice("audio")}
           >
-            <FontAwesomeIcon icon={faMicrophone} />
+            <FontAwesomeIcon icon={audio ? faMicrophone : faMicrophoneSlash} />
           </StyledCallButton>
           <StyledCallButton
             type="button"
