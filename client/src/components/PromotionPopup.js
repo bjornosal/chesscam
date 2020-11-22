@@ -18,6 +18,9 @@ const Tile = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 export const PromotionPopup = ({ color, open, fromTile, toTile }) => {
