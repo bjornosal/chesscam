@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faPhone } from "@fortawesome/free-solid-svg-icons";
@@ -25,13 +25,9 @@ const StyledFriendIdContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* height: 20%;
-  background-color: var(--secondary-color); */
 
   @media only screen and (max-width: 768px) {
     flex-direction: column;
-    /* width: 80vw; */
-    /* height: 30vh; */
     justify-content: flex-start;
   }
 `;
@@ -71,15 +67,6 @@ const StartPageContainer = styled.div`
     height: 100vh;
     width: 100vw;
   }
-  /* background: linear-gradient(
-    to right,
-    transparent 0%,
-    transparent 10%,
-    var(--primary-color) 10%,
-    var(--primary-color) 90%,
-    transparent 90%,
-    transparent 100%
-  ); */
 `;
 
 const StyledCallContainer = styled.div`
@@ -91,10 +78,24 @@ const StyledCallButton = styled.button`
   padding: 1em;
   background-color: var(--secondary-color);
   margin: 0.1em;
+  border: 2px solid #ccc;
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+  transition: 0.5s ease;
+  :hover {
+    border: 2px solid #f0d9b5;
+    cursor: pointer;
+    box-shadow: 0 2px 3px 2px rgba(0, 0, 0, 0.4);
+    transition: 0.5s ease;
+  }
 `;
 
 const StartGamePage = ({ startCall, clientId }) => {
   const [friendID, setFriendID] = useState("");
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    setTitle(greetings[Math.floor(Math.random() * greetings.length)]);
+  }, []);
 
   /**
    * Start the call with or without video
@@ -119,9 +120,7 @@ const StartGamePage = ({ startCall, clientId }) => {
 
   return (
     <div className="container main-window">
-      <h1 style={{ fontSize: "3em" }}>
-        {greetings[Math.floor(Math.random() * greetings.length)]}
-      </h1>
+      <h1 style={{ fontSize: "3em" }}>{title}</h1>
       <StartPageContainer>
         <StyledIdContainer>
           <StyledLabel>Din identifikator</StyledLabel>

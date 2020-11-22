@@ -23,6 +23,9 @@ const StyledIncomingCallButton = styled.button`
   padding: 1em;
   background-color: var(--secondary-color);
   margin: 0.1em;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 function CallModal({ status, callFrom, startCall, rejectCall }) {
