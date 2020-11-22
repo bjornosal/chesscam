@@ -67,12 +67,14 @@ const MyVideo = styled.video`
     margin-right: 5%;
     margin-bottom: -15.5%;
     margin-top: 5%;
+    background-color: transparent;
+    border: none;
   }
 `;
 
 const StyledCallButton = styled.button`
   padding: 1em;
-  background-color: var(--secondary-color);
+  background-color: ${(props) => (props.active ? "var(--secondary-color)" : "red")};
   margin: 0.1em;
   border: 2px solid rgba(0, 0, 0, 0.4);
   border-radius: 2px;
@@ -158,6 +160,7 @@ function CallWindow({
             type="button"
             className={getButtonClass("fa-video-camera", video)}
             onClick={() => toggleMediaDevice("video")}
+            active={video}
           >
             <FontAwesomeIcon icon={video ? faVideo : faVideoSlash} />
           </StyledCallButton>
@@ -166,6 +169,7 @@ function CallWindow({
             type="button"
             className={getButtonClass("fa-microphone", audio)}
             onClick={() => toggleMediaDevice("audio")}
+            active={audio}
           >
             <FontAwesomeIcon icon={audio ? faMicrophone : faMicrophoneSlash} />
           </StyledCallButton>
@@ -174,6 +178,7 @@ function CallWindow({
             className="hangup"
             onClick={() => endCall(true)}
             style={{ backgroundColor: "red" }}
+            
           >
             <FontAwesomeIcon icon={faPhone} />
           </StyledCallButton>
