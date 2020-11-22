@@ -6,7 +6,7 @@
   "dependencies": {},
   "devDependencies": {},
   "scripts": {
-    "start": "cd  server && node index",
+    "start": "cd server && node index",
     "dev": "cd server && nodemon index",
     "heroku-postbuild": "cd server && npm install && cd ../client && npm install && npm run build"
   },
