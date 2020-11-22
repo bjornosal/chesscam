@@ -30,7 +30,6 @@ const StyledFriendIdContainer = styled.div`
 `;
 
 const StyledInput = styled.input`
-  /* TODO: Calculate width according to things */
   border: none;
   border-radius: 10px;
   font-size: 3em;

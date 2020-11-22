@@ -14,12 +14,13 @@ export const shouldBeColorX = (row, column) => {
   );
 };
 
-export const getTileColor = (row, column, possibleMoves, color) => {
-  let tileInNotation = getTileInNotation(column, row, color);
-  if (possibleMoves.some((move) => move.to === tileInNotation)) {
-    return "#6e8d71";
-  }
+export const getTileColor = (row, column) => {
   return shouldBeColorX(row, column) ? "#F0D9B5" : "#B58863";
+};
+
+export const isTilePossibleToMoveTo = (row, column, possibleMoves, color) => {
+  let tileInNotation = getTileInNotation(column, row, color);
+  return possibleMoves.some((move) => move.to === tileInNotation);
 };
 
 export const getSquare = (column, row, color) => {

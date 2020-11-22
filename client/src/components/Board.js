@@ -7,6 +7,7 @@ import {
   getSquare,
   colors,
   getDefaultBoard,
+  isTilePossibleToMoveTo,
 } from "../util/BoardUtil";
 import { Piece } from "./Piece";
 import { PromotionPopup } from "./PromotionPopup";
@@ -31,16 +32,22 @@ export const Board = () => {
   const [board, setBoard] = useState(getDefaultBoard());
   const [chosenTile, setChosenTile] = useState({ column: -1, row: -1 });
   const [color, setColor] = useState(colors.NONE);
-  const [myTurn, setMyTurn] = useState(true);
+  const [myTurn, setMyTurn] = useState(false);
   const [possibleMoves, setPossibleMoves] = useState([]);
   const [isGameOver, setIsGameOver] = useState(false);
   const [fromTile, setFromTile] = useState("");
   const [toTile, setToTile] = useState("");
   const [showPromotionPopup, setShowPromotionPopup] = useState(false);
+
+  useEffect(() => {
+    if (myTurn) {
+      doToast("Det er din tur.");
+    }
+  }, [myTurn]);
+
   useEffect(() => {
     socket
       .on("start", (newBoard, color) => {
-        console.log(newBoard);
         switch (color) {
           case colors.BLACK:
             setColor(colors.BLACK);
@@ -76,8 +83,6 @@ export const Board = () => {
         setChosenTile({ column: -1, row: -1 });
         if (isChecked) {
           doToast("Du er satt i sjakk! 🙃");
-        } else {
-          doToast("Det er din tur.");
         }
       })
       .on("possibleMoves", (possibleMoves) => {
@@ -206,16 +211,17 @@ export const Board = () => {
       <StyledBoard className="boardContainer">
         {board.map((row, rowIndex) => {
           return row.map((tile, columnIndex) => {
+            const possibleToMoveTo = isTilePossibleToMoveTo(
+              rowIndex,
+              columnIndex,
+              possibleMoves,
+              color
+            );
             return (
               <div
                 key={rowIndex + "-" + columnIndex}
                 style={{
-                  backgroundColor: getTileColor(
-                    rowIndex,
-                    columnIndex,
-                    possibleMoves,
-                    color
-                  ),
+                  backgroundColor: getTileColor(rowIndex, columnIndex),
                   color: tile?.color === "b" ? "black" : "white",
                   display: "flex",
                   flexDirection: "column",
@@ -223,6 +229,11 @@ export const Board = () => {
                   justifyContent: "center",
                   stroke: tile?.color === "b" ? "none" : "black",
                   strokeWidth: tile?.color === "b" ? "none" : "25px",
+                  outline: possibleToMoveTo ? "2px solid black" : "",
+                  outlineOffset: "-3px",
+                  boxShadow: possibleToMoveTo
+                    ? "inset 1px 1px 1px 10000px rgba(0, 0, 0, 0.5)"
+                    : "",
                 }}
                 onClick={() => doClick(rowIndex, columnIndex)}
               >
