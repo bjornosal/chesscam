@@ -8,7 +8,7 @@ import { Board } from "./Board";
 
 let pc = {};
 export const Home = () => {
-  const [clientId, setClientId] = useState("gamle-drops-12345");
+  const [clientId, setClientId] = useState("gamle-drops");
   const [callWindowActive, setCallWindowActive] = useState(false);
   const [callModalActive, setCallModalActive] = useState(false);
   const [callFrom, setCallFrom] = useState("");

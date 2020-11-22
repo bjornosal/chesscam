@@ -71,6 +71,8 @@ export const Board = () => {
         setChosenTile({ column: -1, row: -1 });
         if (isChecked) {
           doToast("Du er satt i sjakk! 🙃");
+        } else {
+          doToast("Det er din tur.");
         }
       })
       .on("possibleMoves", (possibleMoves) => {
@@ -81,7 +83,7 @@ export const Board = () => {
         );
       })
       .on("invalidMove", () => {
-        doToast("Oops. Der var det noe som gikk galt!")
+        doToast("Oops. Der var det noe som gikk galt!");
         setMyTurn(true);
       });
   }, [color]);
@@ -92,7 +94,7 @@ export const Board = () => {
 
   const choosePiece = (rowIndex, columnIndex) => {
     if (!myTurn) {
-      doToast("Ikke din tur helt enda.")
+      doToast("Ikke din tur helt enda.");
       return false;
     }
 
@@ -106,7 +108,7 @@ export const Board = () => {
     }
 
     if (piece.color !== color) {
-      doToast("Det er vel ikke din brikke? ♟️")
+      doToast("Det er vel ikke din brikke? ♟️");
       return false;
     }
 
@@ -118,9 +120,9 @@ export const Board = () => {
     return true;
   };
 
-  const doToast = (message) => {
+  const doToast = (message, autoCloseTime = 3000) => {
     toast.info(message, {
-      autoClose: 3000,
+      autoClose: autoCloseTime,
     });
   };
 
@@ -132,12 +134,12 @@ export const Board = () => {
 
   const doClick = (rowIndex, columnIndex) => {
     if (isGameOver) {
-      doToast("Spillet er dessverre over nå! ♟️")
+      doToast("Spillet er dessverre over nå! ♟️");
       return false;
     }
 
     if (!myTurn) {
-      doToast("Det er ikke din tur, smør deg med tålmodighet! ")
+      doToast("Det er ikke din tur, smør deg med tålmodighet! ");
       return false;
     }
 
@@ -153,7 +155,7 @@ export const Board = () => {
     let toTile = getTileInNotation(columnIndex, rowIndex, color);
     if (!possibleMoves.some((move) => move.to === toTile)) {
       //TODO: Localization
-      doToast("Det er ikke et gyldig trekk.")
+      doToast("Det er ikke et gyldig trekk.");
       return;
     }
 
