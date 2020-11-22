@@ -34,11 +34,17 @@ const ChatContainer = styled.div`
 const StyledPeerVideo = styled.video`
   width: 25em;
   padding-bottom: 1em;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
 `;
 
 const MyVideo = styled.video`
   width: 10em;
   align-self: flex-end;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  margin: 1px;
+  border-radius: 2px;
+  background-color: rgba(0, 0, 0, 0.4);
 `;
 
 const StyledCallButton = styled.button`
@@ -128,7 +134,6 @@ function CallWindow({
             key="btnVideo"
             type="button"
             className={getButtonClass("fa-video-camera", video)}
-
             onClick={() => toggleMediaDevice("video")}
           >
             <FontAwesomeIcon icon={video ? faVideo : faVideoSlash} />
