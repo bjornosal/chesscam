@@ -57,19 +57,19 @@ export const PromotionPopup = ({ color, open, fromTile, toTile }) => {
     >
       <div>Velg din brikke!</div>
       <PieceContainer>
-        <Tile color="grey" onClick={() => choosePromotion("p")}>
+        <Tile color="#F0D9B5" onClick={() => choosePromotion("p")}>
           <Piece type="p" color={color} />
         </Tile>
-        <Tile color="beige" onClick={() => choosePromotion("q")}>
+        <Tile color="#B58863" onClick={() => choosePromotion("q")}>
           <Piece type="q" color={color} />
         </Tile>
-        <Tile color="grey" onClick={() => choosePromotion("n")}>
+        <Tile color="#F0D9B5" onClick={() => choosePromotion("n")}>
           <Piece type="n" color={color} />
         </Tile>
-        <Tile color="beige" onClick={() => choosePromotion("b")}>
+        <Tile color="#B58863" onClick={() => choosePromotion("b")}>
           <Piece type="b" color={color} />
         </Tile>
-        <Tile color="grey" onClick={() => choosePromotion("r")}>
+        <Tile color="#F0D9B5" onClick={() => choosePromotion("r")}>
           <Piece type="r" color={color} />
         </Tile>
       </PieceContainer>
