@@ -46,7 +46,7 @@ export const Board = () => {
   }, [myTurn]);
 
   useEffect(() => {
-    socket
+  socket
       .on("start", (newBoard, color) => {
         switch (color) {
           case colors.BLACK:
@@ -162,13 +162,12 @@ export const Board = () => {
       return;
     }
 
+    let fromTile = getTileInNotation(chosenTile.column, chosenTile.row, color);
     let toTile = getTileInNotation(columnIndex, rowIndex, color);
     if (!possibleMoves.some((move) => move.to === toTile)) {
-      //TODO: Localization
       doToast("Det er ikke et gyldig trekk.");
       return;
     }
-
     if (
       possibleMoves.some(
         (move) => move.to === toTile && move.promotion !== undefined
@@ -179,11 +178,10 @@ export const Board = () => {
     }
 
     socket.emit("move", {
-      from: getTileInNotation(chosenTile.column, chosenTile.row, color),
+      from: fromTile,
       to: toTile,
     });
   };
-
   return (
     <div className="gameContainer">
       <ToastContainer

@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import socket from "../socket/socket";
 import { Piece } from "./Piece";
 import styled from "styled-components";
@@ -13,20 +13,30 @@ const PieceContainer = styled.div`
 
 const Tile = styled.div`
   background-color: ${(props) => props.color};
-  width: 50px;
-  height: 50px;
+  width: 75px;
+  height: 75px;
   display: flex;
   align-items: center;
   justify-content: center;
   :hover {
     cursor: pointer;
   }
+
+  @media only screen and (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+  }
 `;
 
 export const PromotionPopup = ({ color, open, fromTile, toTile }) => {
   const [isOpen, setIsOpen] = useState(open);
 
+  useEffect(() => {
+    setIsOpen(open);
+  }, [open]);
+
   const choosePromotion = (type) => {
+    console.log("Test");
     socket.emit("move", {
       from: fromTile,
       to: toTile,
@@ -34,7 +44,6 @@ export const PromotionPopup = ({ color, open, fromTile, toTile }) => {
     });
     setIsOpen(false);
   };
-
   return (
     <Modal
       isOpen={isOpen}
@@ -58,7 +67,7 @@ export const PromotionPopup = ({ color, open, fromTile, toTile }) => {
         },
       }}
     >
-      <div>Velg din brikke!</div>
+      <div>Velg hva du skal oppgradere til!</div>
       <PieceContainer>
         <Tile color="#F0D9B5" onClick={() => choosePromotion("p")}>
           <Piece type="p" color={color} />

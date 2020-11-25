@@ -5,7 +5,6 @@ import styled from "styled-components";
 const StyledPiece = styled(FontAwesomeIcon)`
   transform: scale(3.5);
   @media only screen and (max-width: 768px) {
-    
     transform: scale(2);
   }
 `;
@@ -39,9 +38,5 @@ export const Piece = ({ type }) => {
   };
 
   const iconType = getIconString(type);
-  return iconType === null ? (
-    <Fragment />
-  ) : (
-    <StyledPiece icon={iconType}  />
-  );
+  return iconType === null ? <Fragment /> : <StyledPiece icon={iconType} />;
 };

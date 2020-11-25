@@ -57,7 +57,9 @@ function initSocket(socket) {
       } else {
         const receiver = rooms.get(socket.id).opponent;
         const isGameOver = game.game_over();
-        socket.emit("successMove", game.board(), isGameOver);
+        const gameBoard = game.board();
+        console.log(game.fen())
+        socket.emit("successMove", gameBoard, isGameOver);
         if (receiver) {
           const isChecked = game.in_check();
           receiver.emit("opponentMove", game.board(), isGameOver, isChecked);
