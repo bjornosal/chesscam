@@ -1,7 +1,8 @@
 const io = require("socket.io");
 const users = require("./users");
 const rooms = require("./rooms");
-const { Chess } = require("chess.js");
+const logger = require("../logging/logger");
+require("chess.js");
 
 const colors = {
   BLACK: "b",
@@ -35,30 +36,69 @@ function initSocket(socket) {
       }
     })
     .on("start", () => {
-      let opponent = rooms.get(socket.id).opponent;
-      let game = rooms.get(socket.id).game;
-      if (opponent === undefined || opponent === null) {
-        console.log("Couldn't start.");
+      let room = getRoom(socket);
+      if (room == null) {
         return;
       }
+
+      let game = getGame(room);
+      if (room == null) {
+        return;
+      }
+
+      const opponent = getOpponent(room);
+      if (opponent === null) {
+        return;
+      }
+
       socket.emit("start", game.board(), colors.BLACK);
       opponent.emit("start", game.board(), colors.WHITE);
     })
     .on("choose", (tile) => {
-      let game = rooms.get(socket.id).game;
+      let room = getRoom(socket);
+      if (room == null) {
+        return;
+      }
+
+      let game = getGame(room);
+      if (room == null) {
+        return;
+      }
+
       socket.emit("possibleMoves", game.moves({ verbose: true, square: tile }));
     })
     .on("move", (data) => {
-      // Validate move
-      let game = rooms.get(socket.id).game;
-      let result = game.move({ from: data.from, to: data.to });
+      let room = getRoom(socket);
+      if (room == null) {
+        return;
+      }
+
+      let game = getGame(room);
+      if (room == null) {
+        return;
+      }
+      let result;
+      if (data.promotion) {
+        result = game.move({
+          from: data.from,
+          to: data.to,
+          promotion: data.promotion,
+        });
+      } else {
+        result = game.move({ from: data.from, to: data.to });
+      }
+
       if (result == null) {
         socket.emit("invalidMove");
       } else {
-        const receiver = rooms.get(socket.id).opponent;
+        const receiver = getOpponent(room);
+
+        if (receiver === null) {
+          return;
+        }
+
         const isGameOver = game.game_over();
         const gameBoard = game.board();
-        console.log(game.fen())
         socket.emit("successMove", gameBoard, isGameOver);
         if (receiver) {
           const isChecked = game.in_check();
@@ -77,6 +117,38 @@ function initSocket(socket) {
       users.remove(id);
       console.log(id, "disconnected");
     });
+}
+
+function getRoom(socket) {
+  let room = rooms.get(socket.id);
+  if (room === null || room === undefined) {
+    logger.error(
+      `Room was undefined for socket with id ${socket.id} and name ${socket.name}`
+    );
+    socket.emit("error");
+    return null;
+  }
+  return room;
+}
+
+function getGame(room) {
+  let game = room.game;
+  if (game === null || game === undefined) {
+    logger.error(`Game was not present in room ${room}`);
+    socket.emit("error");
+    return null;
+  }
+  return game;
+}
+
+function getOpponent(room) {
+  let opponent = room.opponent;
+  if (opponent === null || opponent === undefined) {
+    logger.error(`Opponent was not present in room ${room}`);
+    socket.emit("error");
+    return null;
+  }
+  return opponent;
 }
 
 module.exports = (server) => {
