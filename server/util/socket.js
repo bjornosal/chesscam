@@ -120,12 +120,19 @@ function initSocket(socket) {
 }
 
 function getRoom(socket) {
+  if (socket === null || socket === undefined) {
+    logger.error(`Socket is missing. `);
+    return null;
+  }
+
   let room = rooms.get(socket.id);
   if (room === null || room === undefined) {
     logger.error(
-      `Room was undefined for socket with id ${socket.id} and name ${socket.name}`
+      `Room was undefined for socket with id ${socket.id}.`
     );
-    socket.emit("error");
+    if(socket !== null && socket !== undefined) {
+      socket.emit("error");
+    }
     return null;
   }
   return room;
