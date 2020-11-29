@@ -23,10 +23,19 @@ class MediaDevice extends Emitter {
         this.emit("stream", stream);
       })
       .catch((err) => {
+        const errorName = err.name;
+
         if (err instanceof DOMException) {
-        this.emit("stream");
-        alert("Cannot open webcam and/or microphone");
+          this.emit("stream");
+          alert("Klarte ikke åpne kamera/mikrofon.");
+        } else if (
+          errorName === "NotFoundError" ||
+          errorName === "NotReadableError"
+        ) {
+          this.emit("stream");
+          alert("Fant ikke noe kamera/mikrofon");
         } else {
+          alert("Fant ikke noe kamera/mikrofon. Si gjerne ifra om det er du grei.");
           console.log(err);
         }
       });
