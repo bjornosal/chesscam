@@ -150,7 +150,7 @@ function CallWindow({
   return (
     <StyledCallWindow active={active} className={"call-window"}>
       <GameContainer>
-        <Board />
+        <Board started={started}/>
         {!started && (
           <StyledGameButton type="button" onClick={() => socket.emit("start")}>
             Start et spill!
@@ -168,7 +168,10 @@ function CallWindow({
             onClick={() => toggleMediaDevice("video")}
             active={video}
           >
-            <FontAwesomeIcon icon={video ? faVideo : faVideoSlash} style={{transform: "scale(2)"}}/>
+            <FontAwesomeIcon
+              icon={video ? faVideo : faVideoSlash}
+              style={{ transform: "scale(2)" }}
+            />
           </StyledCallButton>
           <StyledCallButton
             key="btnAudio"
@@ -177,7 +180,10 @@ function CallWindow({
             onClick={() => toggleMediaDevice("audio")}
             active={audio}
           >
-            <FontAwesomeIcon icon={audio ? faMicrophone : faMicrophoneSlash} style={{transform: "scale(2)"}}/>
+            <FontAwesomeIcon
+              icon={audio ? faMicrophone : faMicrophoneSlash}
+              style={{ transform: "scale(2)" }}
+            />
           </StyledCallButton>
           <StyledCallButton
             type="button"
@@ -185,7 +191,7 @@ function CallWindow({
             onClick={() => endCall(true)}
             style={{ backgroundColor: "red" }}
           >
-            <FontAwesomeIcon icon={faPhone} style={{transform: "scale(2)"}}/>
+            <FontAwesomeIcon icon={faPhone} style={{ transform: "scale(2)" }} />
           </StyledCallButton>
         </div>
       </ChatContainer>

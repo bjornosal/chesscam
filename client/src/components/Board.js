@@ -28,7 +28,7 @@ const StyledBoard = styled.div`
   }
 `;
 
-export const Board = () => {
+export const Board = ({ started }) => {
   const [board, setBoard] = useState(getDefaultBoard());
   const [chosenTile, setChosenTile] = useState({ column: -1, row: -1 });
   const [color, setColor] = useState(colors.NONE);
@@ -46,7 +46,7 @@ export const Board = () => {
   }, [myTurn]);
 
   useEffect(() => {
-  socket
+    socket
       .on("start", (newBoard, color) => {
         switch (color) {
           case colors.BLACK:
@@ -58,7 +58,6 @@ export const Board = () => {
             setColor(colors.WHITE);
             setBoard(newBoard);
             setMyTurn(true);
-
             break;
           default:
             alert("Biip biip. Error. No comprende.");
@@ -96,7 +95,7 @@ export const Board = () => {
         doToast("Oops. Der var det noe som gikk galt!");
         setMyTurn(true);
       });
-  }, [color]);
+  }, [color, started]);
 
   const reverseBoard = (board) => {
     return [...board].reverse().map((row) => [...row].reverse());
@@ -182,65 +181,71 @@ export const Board = () => {
       to: toTile,
     });
   };
+
+  console.log(started)
+
   return (
-    <div className="gameContainer">
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      <PromotionPopup
-        open={showPromotionPopup}
-        color={color}
-        fromTile={fromTile}
-        toTile={toTile}
-      />
-      {isGameOver && (
-        <div className="finishedGameModal">
-          Spillet er ferdig! Du {myTurn ? "tapte" : "vant"}.
+    <>
+      {(started && (
+        <div className="gameContainer">
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            pauseOnHover
+          />
+          <PromotionPopup
+            open={showPromotionPopup}
+            color={color}
+            fromTile={fromTile}
+            toTile={toTile}
+          />
+          {isGameOver && (
+            <div className="finishedGameModal">
+              Spillet er ferdig! Du {myTurn ? "tapte" : "vant"}.
+            </div>
+          )}
+          <StyledBoard className="boardContainer">
+            {board.map((row, rowIndex) => {
+              return row.map((tile, columnIndex) => {
+                const possibleToMoveTo = isTilePossibleToMoveTo(
+                  rowIndex,
+                  columnIndex,
+                  possibleMoves,
+                  color
+                );
+                return (
+                  <div
+                    key={rowIndex + "-" + columnIndex}
+                    style={{
+                      backgroundColor: getTileColor(rowIndex, columnIndex),
+                      color: tile?.color === "b" ? "black" : "white",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      stroke: tile?.color === "b" ? "none" : "black",
+                      strokeWidth: tile?.color === "b" ? "none" : "25px",
+                      outline: possibleToMoveTo ? "2px solid black" : "",
+                      outlineOffset: "-3px",
+                      boxShadow: possibleToMoveTo
+                        ? "inset 1px 1px 1px 10000px rgba(0, 0, 0, 0.5)"
+                        : "",
+                    }}
+                    onClick={() => doClick(rowIndex, columnIndex)}
+                  >
+                    <Piece type={tile?.type} />
+                  </div>
+                );
+              });
+            })}
+          </StyledBoard>
         </div>
-      )}
-      <StyledBoard className="boardContainer">
-        {board.map((row, rowIndex) => {
-          return row.map((tile, columnIndex) => {
-            const possibleToMoveTo = isTilePossibleToMoveTo(
-              rowIndex,
-              columnIndex,
-              possibleMoves,
-              color
-            );
-            return (
-              <div
-                key={rowIndex + "-" + columnIndex}
-                style={{
-                  backgroundColor: getTileColor(rowIndex, columnIndex),
-                  color: tile?.color === "b" ? "black" : "white",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  stroke: tile?.color === "b" ? "none" : "black",
-                  strokeWidth: tile?.color === "b" ? "none" : "25px",
-                  outline: possibleToMoveTo ? "2px solid black" : "",
-                  outlineOffset: "-3px",
-                  boxShadow: possibleToMoveTo
-                    ? "inset 1px 1px 1px 10000px rgba(0, 0, 0, 0.5)"
-                    : "",
-                }}
-                onClick={() => doClick(rowIndex, columnIndex)}
-              >
-                <Piece type={tile?.type} />
-              </div>
-            );
-          });
-        })}
-      </StyledBoard>
-    </div>
+      )) || <></>}
+    </>
   );
 };
