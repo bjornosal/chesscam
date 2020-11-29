@@ -36,7 +36,6 @@ export const PromotionPopup = ({ color, open, fromTile, toTile }) => {
   }, [open]);
 
   const choosePromotion = (type) => {
-    console.log("Test");
     socket.emit("move", {
       from: fromTile,
       to: toTile,

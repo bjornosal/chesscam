@@ -24,7 +24,6 @@ const StyledBoard = styled.div`
   @media only screen and (max-width: 768px) {
     width: calc(90vw);
     height: calc(90vw);
-    margin-top: 40px;
   }
 `;
 
@@ -182,7 +181,6 @@ export const Board = ({ started }) => {
     });
   };
 
-  console.log(started)
 
   return (
     <>

@@ -65,7 +65,7 @@ const StartPageContainer = styled.div`
   -moz-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.4);
   box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.4);
   @media only screen and (max-width: 768px) {
-    height: 80vh;
+    height: 70vh;
     width: 90vw;
   }
 `;
@@ -81,7 +81,7 @@ const StyledCallButton = styled.button`
   margin: 0.1em;
   border: 2px solid rgba(0, 0, 0, 0.4);
   border-radius: 24px;
-  box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 1px 1px 2px rgba(0, 0, 0, 0.6);
   transition: 0.5s ease;
   :hover {
     border: 2px solid var(--main-bg-color);
@@ -90,6 +90,18 @@ const StyledCallButton = styled.button`
     transition: 0.5s ease;
   }
 `;
+
+const greetings = [
+  "Hi grandma!",
+  "Hei mormor!",
+  "Hei bestemor!",
+  "Hei farmor!",
+  "Hola abuela",
+  "Hé grand-mère!",
+  "Hey Oma!",
+  "Obaasan!",
+  "Hej bedstemor!",
+];
 
 const StartGamePage = ({ startCall, clientId }) => {
   const [friendID, setFriendID] = useState("");
@@ -107,18 +119,6 @@ const StartGamePage = ({ startCall, clientId }) => {
     const config = { audio: true, video };
     return () => friendID && startCall(true, friendID, config);
   };
-
-  const greetings = [
-    "Hi grandma!",
-    "Hei mormor!",
-    "Hei bestemor!",
-    "Hei farmor!",
-    "Hola abuela",
-    "Hé grand-mère!",
-    "Hey Oma!",
-    "Obaasan!",
-    "Hej bedstemor!",
-  ];
 
   return (
     <div className="container main-window">
@@ -142,7 +142,6 @@ const StartGamePage = ({ startCall, clientId }) => {
             className="clientId"
             spellCheck={false}
             placeholder="Bestemors id"
-            autoCorrect={false}
             onChange={(event) => {
               setFriendID(event.target.value);
             }}

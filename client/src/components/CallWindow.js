@@ -20,6 +20,7 @@ const StyledCallWindow = styled.div`
   justify-content: space-evenly;
   @media only screen and (max-width: 768px) {
     flex-direction: column-reverse;
+    height: 90vh;
   }
 `;
 
@@ -45,6 +46,18 @@ const ChatContainer = styled.div`
   }
 `;
 
+const MyInfoContainer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  width: 80%;
+  margin-top: 5px;
+
+  @media only screen and (max-width: 768px) {
+    margin-bottom: 2px;
+  }
+`;
+
 const StyledPeerVideo = styled.video`
   width: 80%;
   padding-bottom: 1em;
@@ -61,16 +74,16 @@ const MyVideo = styled.video`
   align-self: flex-end;
   border: 1px solid rgba(0, 0, 0, 0.4);
   margin: 1px;
-  margin-right: 10%;
   border-radius: 2px;
   background-color: rgba(0, 0, 0, 0.4);
   @media only screen and (max-width: 768px) {
-    margin-right: 5%;
-    margin-bottom: -15.5%;
-    margin-top: 5%;
     background-color: transparent;
     border: none;
   }
+`;
+
+const VideoControl = styled.div`
+  align-self: flex-end;
 `;
 
 const StyledCallButton = styled.button`
@@ -150,7 +163,7 @@ function CallWindow({
   return (
     <StyledCallWindow active={active} className={"call-window"}>
       <GameContainer>
-        <Board started={started}/>
+        <Board started={started} />
         {!started && (
           <StyledGameButton type="button" onClick={() => socket.emit("start")}>
             Start et spill!
@@ -159,41 +172,46 @@ function CallWindow({
       </GameContainer>
       <ChatContainer>
         <StyledPeerVideo id="peerVideo" ref={peerVideo} autoPlay />
-        <MyVideo id="localVideo" ref={localVideo} autoPlay muted />
-        <div className="video-control">
-          <StyledCallButton
-            key="btnVideo"
-            type="button"
-            className={getButtonClass("fa-video-camera", video)}
-            onClick={() => toggleMediaDevice("video")}
-            active={video}
-          >
-            <FontAwesomeIcon
-              icon={video ? faVideo : faVideoSlash}
-              style={{ transform: "scale(2)" }}
-            />
-          </StyledCallButton>
-          <StyledCallButton
-            key="btnAudio"
-            type="button"
-            className={getButtonClass("fa-microphone", audio)}
-            onClick={() => toggleMediaDevice("audio")}
-            active={audio}
-          >
-            <FontAwesomeIcon
-              icon={audio ? faMicrophone : faMicrophoneSlash}
-              style={{ transform: "scale(2)" }}
-            />
-          </StyledCallButton>
-          <StyledCallButton
-            type="button"
-            className="hangup"
-            onClick={() => endCall(true)}
-            style={{ backgroundColor: "red" }}
-          >
-            <FontAwesomeIcon icon={faPhone} style={{ transform: "scale(2)" }} />
-          </StyledCallButton>
-        </div>
+        <MyInfoContainer>
+          <MyVideo id="localVideo" ref={localVideo} autoPlay muted />
+          <VideoControl>
+            <StyledCallButton
+              key="btnVideo"
+              type="button"
+              className={getButtonClass("fa-video-camera", video)}
+              onClick={() => toggleMediaDevice("video")}
+              active={video}
+            >
+              <FontAwesomeIcon
+                icon={video ? faVideo : faVideoSlash}
+                style={{ transform: "scale(2)" }}
+              />
+            </StyledCallButton>
+            <StyledCallButton
+              key="btnAudio"
+              type="button"
+              className={getButtonClass("fa-microphone", audio)}
+              onClick={() => toggleMediaDevice("audio")}
+              active={audio}
+            >
+              <FontAwesomeIcon
+                icon={audio ? faMicrophone : faMicrophoneSlash}
+                style={{ transform: "scale(2)" }}
+              />
+            </StyledCallButton>
+            <StyledCallButton
+              type="button"
+              className="hangup"
+              onClick={() => endCall(true)}
+              style={{ backgroundColor: "red" }}
+            >
+              <FontAwesomeIcon
+                icon={faPhone}
+                style={{ transform: "scale(2)" }}
+              />
+            </StyledCallButton>
+          </VideoControl>
+        </MyInfoContainer>
       </ChatContainer>
     </StyledCallWindow>
   );
