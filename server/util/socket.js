@@ -32,7 +32,9 @@ function initSocket(socket) {
         });
         rooms.create(socket, receiver);
       } else {
-        socket.emit("failed");
+        if (socket !== null) {
+          socket.emit("failed");
+        }
       }
     })
     .on("start", () => {
@@ -50,8 +52,9 @@ function initSocket(socket) {
       if (opponent === null) {
         return;
       }
-
-      socket.emit("start", game.board(), colors.BLACK);
+      if (socket !== null) {
+        socket.emit("start", game.board(), colors.BLACK);
+      }
       opponent.emit("start", game.board(), colors.WHITE);
     })
     .on("choose", (tile) => {
@@ -77,6 +80,7 @@ function initSocket(socket) {
       if (room == null) {
         return;
       }
+
       let result;
       if (data.promotion) {
         result = game.move({
@@ -89,7 +93,9 @@ function initSocket(socket) {
       }
 
       if (result == null) {
-        socket.emit("invalidMove");
+        if (socket !== null) {
+          socket.emit("invalidMove");
+        }
       } else {
         const receiver = getOpponent(room);
 
@@ -99,8 +105,10 @@ function initSocket(socket) {
 
         const isGameOver = game.game_over();
         const gameBoard = game.board();
-        socket.emit("successMove", gameBoard, isGameOver);
-        if (receiver) {
+        if (socket !== null) {
+          socket.emit("successMove", gameBoard, isGameOver);
+        }
+        if (receiver !== null && receiver !== undefined) {
           const isChecked = game.in_check();
           receiver.emit("opponentMove", game.board(), isGameOver, isChecked);
         }
@@ -108,7 +116,7 @@ function initSocket(socket) {
     })
     .on("end", (data) => {
       const receiver = users.get(data.to);
-      if (receiver) {
+      if (receiver !== null && receiver !== undefined) {
         receiver.emit("end");
       }
     })
@@ -127,12 +135,7 @@ function getRoom(socket) {
 
   let room = rooms.get(socket.id);
   if (room === null || room === undefined) {
-    logger.error(
-      `Room was undefined for socket with id ${socket.id}.`
-    );
-    if(socket !== null && socket !== undefined) {
-      socket.emit("error");
-    }
+    logger.error(`Room was undefined for socket with id ${socket.id}.`);
     return null;
   }
   return room;
