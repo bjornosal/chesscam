@@ -6,8 +6,6 @@ const socket = require("./util/socket");
 const app = express();
 const server = http.createServer(app);
 
-app.use("/", express.static(`${__dirname}/../client/build`));
-
 function requireHTTPS(req, res, next) {
   // The 'x-forwarded-proto' check is for Heroku
   if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
@@ -17,6 +15,8 @@ function requireHTTPS(req, res, next) {
 }
 
 app.use(requireHTTPS); 
+
+app.use("/", express.static(`${__dirname}/../client/build`));
 
 server.listen(port, () => {
   socket(server);
