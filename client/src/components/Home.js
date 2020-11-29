@@ -17,7 +17,6 @@ export const Home = () => {
   useEffect(() => {
     socket
       .on("init", ({ id: clientId }) => {
-        document.title = `${clientId} - Video`;
         setClientId(clientId);
       })
       .on("request", ({ from: callFrom }) => {
