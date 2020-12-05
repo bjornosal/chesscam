@@ -2,6 +2,7 @@ const http = require("http");
 const express = require("express");
 const port = process.env.PORT || 5000;
 const socket = require("./util/socket");
+require('dotenv').config()
 
 const app = express();
 const server = http.createServer(app);
