@@ -39,12 +39,12 @@ function initSocket(socket) {
     })
     .on("start", () => {
       let room = getRoom(socket);
-      if (room == null) {
+      if (room === null) {
         return;
       }
 
       let game = getGame(room);
-      if (room == null) {
+      if (room === null) {
         return;
       }
 
@@ -54,17 +54,21 @@ function initSocket(socket) {
       }
       if (socket !== null) {
         socket.emit("start", game.board(), colors.BLACK);
+        opponent.emit("start", game.board(), colors.WHITE);
       }
-      opponent.emit("start", game.board(), colors.WHITE);
     })
     .on("choose", (tile) => {
       let room = getRoom(socket);
-      if (room == null) {
+      if (room === null) {
         return;
       }
 
       let game = getGame(room);
-      if (room == null) {
+      if (game === null) {
+        return;
+      }
+
+      if (socket === null) {
         return;
       }
 
@@ -72,12 +76,12 @@ function initSocket(socket) {
     })
     .on("move", (data) => {
       let room = getRoom(socket);
-      if (room == null) {
+      if (room === null) {
         return;
       }
 
       let game = getGame(room);
-      if (room == null) {
+      if (game === null) {
         return;
       }
 
@@ -92,7 +96,7 @@ function initSocket(socket) {
         result = game.move({ from: data.from, to: data.to });
       }
 
-      if (result == null) {
+      if (result === null) {
         if (socket !== null) {
           socket.emit("invalidMove");
         }
@@ -103,14 +107,21 @@ function initSocket(socket) {
           return;
         }
 
+        const lastMove = { from: data.from, to: data.to };
         const isGameOver = game.game_over();
         const gameBoard = game.board();
         if (socket !== null) {
-          socket.emit("successMove", gameBoard, isGameOver);
+          socket.emit("successMove", gameBoard, isGameOver, lastMove);
         }
         if (receiver !== null && receiver !== undefined) {
           const isChecked = game.in_check();
-          receiver.emit("opponentMove", game.board(), isGameOver, isChecked);
+          receiver.emit(
+            "opponentMove",
+            game.board(),
+            isGameOver,
+            isChecked,
+            lastMove
+          );
         }
       }
     })
