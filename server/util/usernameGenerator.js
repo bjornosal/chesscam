@@ -102,7 +102,7 @@ function generateClientId() {
   const MAX = 9999;
   const num = Math.floor(Math.random() * (MAX + 1 - MIN)) + MIN;
 
-  return `${adj}-${noun}`;
+  return `${adj} ${noun}`;
   // return `${adj}-${noun}-${num}`;
 }
 
