@@ -37,6 +37,7 @@ export const Board = ({ started }) => {
   const [fromTile, setFromTile] = useState("");
   const [toTile, setToTile] = useState("");
   const [showPromotionPopup, setShowPromotionPopup] = useState(false);
+  const [lastMove, setLastMove] = useState({});
 
   useEffect(() => {
     if (myTurn) {
@@ -72,12 +73,13 @@ export const Board = ({ started }) => {
         setToTile("");
         setChosenTile({ column: -1, row: -1 });
       })
-      .on("opponentMove", (newBoard, isGameOver, isChecked) => {
+      .on("opponentMove", (newBoard, isGameOver, isChecked, lastMove) => {
         setBoard(color === colors.WHITE ? newBoard : reverseBoard(newBoard));
         setIsGameOver(isGameOver);
         setMyTurn(true);
         setFromTile("");
         setToTile("");
+        setLastMove(lastMove);
         setChosenTile({ column: -1, row: -1 });
         if (isChecked) {
           doToast("Du er satt i sjakk! 🙃");
@@ -181,6 +183,29 @@ export const Board = ({ started }) => {
     });
   };
 
+  const getOverlayColor = (tileInNotation, possibleToMoveTo) => {
+    if (possibleToMoveTo) {
+      return "inset 1px 1px 1px 10000px rgba(0, 0, 0, 0.5)";
+    }
+
+    if (tileInNotation === lastMove.from || tileInNotation === lastMove.to) {
+      return "inset 1px 1px 1px 10000px rgba(110, 141, 113, 0.5)";
+    }
+
+    return "";
+  };
+
+  const getOutlineColor = (tileInNotation, possibleToMoveTo) => {
+    if (possibleToMoveTo) {
+      return "2px solid black";
+    }
+
+    if (tileInNotation === lastMove.from || tileInNotation === lastMove.to) {
+      return "2px solid var(--secondary-color)";
+    }
+
+    return "";
+  };
 
   return (
     <>
@@ -216,6 +241,13 @@ export const Board = ({ started }) => {
                   possibleMoves,
                   color
                 );
+
+                const tileInNotation = getTileInNotation(
+                  columnIndex,
+                  rowIndex,
+                  color
+                );
+
                 return (
                   <div
                     key={rowIndex + "-" + columnIndex}
@@ -228,11 +260,15 @@ export const Board = ({ started }) => {
                       justifyContent: "center",
                       stroke: tile?.color === "b" ? "none" : "black",
                       strokeWidth: tile?.color === "b" ? "none" : "25px",
-                      outline: possibleToMoveTo ? "2px solid black" : "",
+                      outline: getOutlineColor(
+                        tileInNotation,
+                        possibleToMoveTo
+                      ),
                       outlineOffset: "-3px",
-                      boxShadow: possibleToMoveTo
-                        ? "inset 1px 1px 1px 10000px rgba(0, 0, 0, 0.5)"
-                        : "",
+                      boxShadow: getOverlayColor(
+                        tileInNotation,
+                        possibleToMoveTo
+                      ),
                     }}
                     onClick={() => doClick(rowIndex, columnIndex)}
                   >
