@@ -5,6 +5,23 @@ import { setCookieToNeverExpire } from "../util/CookieUtil";
 
 Modal.setAppElement("#root");
 
+const ConfirmButton = styled.button`
+  background-color: var(--primary-color);
+  border: 1px solid #000;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s linear;
+  /* transition: color 0.2s linear; */
+
+  &:hover {
+    background-color: var(--secondary-color);
+    color: #fff;
+  }
+`;
+
 export const InformationPopup = ({ open }) => {
   const [isOpen, setIsOpen] = useState(open);
 
@@ -48,7 +65,9 @@ export const InformationPopup = ({ open }) => {
           under denne boksen, og ringe i vei!
         </p>
       </section>
-      <button onClick={() => closeModal(true)}>Jeg forstår!</button>
+      <ConfirmButton className="confirmButton" onClick={() => closeModal(true)}>
+        Jeg forstår!
+      </ConfirmButton>
     </Modal>
   );
 };

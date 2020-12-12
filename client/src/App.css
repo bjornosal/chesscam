@@ -1,28 +1,26 @@
 .App {
   text-align: center;
 }
+
+.Modal {
+  border: 3px solid #000;
+  background: var(--main-bg-color);
+  border-radius: 4px;
+  padding: 20px;
+  overflow: auto;
+  outline: none;
+  margin: auto;
+  margin-top: 2%;
+}
+
 @media only screen and (min-width: 768px) {
   .Modal {
-    border: 3px solid var(--secondary-color);
-    background: var(--main-bg-color);
-    overflow: auto;
-    border-radius: 4px;
-    outline: none;
-    padding: 20px;
     width: 35%;
-    margin: 0 auto;
   }
 }
 
 @media only screen and (max-width: 768px) {
   .Modal {
-    border: 3px solid var(--secondary-color);
-    background: var(--main-bg-color);
-    border-radius: 4px;
-    outline: none;
-    padding: 20px;
     width: 80%;
-    margin: auto;
-    margin-top: 2%;
   }
 }
