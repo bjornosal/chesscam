@@ -44,27 +44,28 @@ export const InformationPopup = ({ open }) => {
       onRequestClose={() => closeModal(false)}
       shouldCloseOnOverlayClick={true}
     >
-      <section>
-        <h1>Hva er dette?</h1>
-        <p>
-          Dette er en forenklet måte å spille spill virtuelt med dine eldre når
-          du er litt langt borte, eller de ikke kan få besøk. Akkurat nå så er
-          det kun sjakk.
-        </p>
-      </section>
 
-      <section>
-        <h1>Hvordan funker det?</h1>
-        <p>
-          Først, så må motparten også gå til denne siden.
-          <br />
-          Etter det må dere finne en måte å dele identifikatoren med hverandre
-          på.
-          <br />
-          Når det er gjort så er det bare å skrive inn identifikatoren i feltet
-          under denne boksen, og ringe i vei!
-        </p>
-      </section>
+        <section>
+          <h2>Hva er spillmedmormor.no?</h2>
+          <p>
+            Dette er en forenklet måte å spille spill virtuelt med dine eldre
+            når du er litt langt borte, eller de ikke kan få besøk. Akkurat nå
+            så er det kun sjakk.
+          </p>
+        </section>
+
+        <section>
+          <h2>Hvordan funker det?</h2>
+          <p>
+            Først, så må motparten også gå til denne siden.
+            <br />
+            Etter det må dere finne en måte å dele identifikatoren med hverandre
+            på.
+            <br />
+            Når det er gjort så er det bare å skrive inn identifikatoren i
+            feltet under denne boksen, og ringe i vei!
+          </p>
+        </section>
       <ConfirmButton className="confirmButton" onClick={() => closeModal(true)}>
         Jeg forstår!
       </ConfirmButton>
