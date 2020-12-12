@@ -12,11 +12,20 @@ export const InformationPopup = ({ open }) => {
     setIsOpen(open);
   }, [open]);
 
+  const closeModal = (isUnderstood) => {
+    if (isUnderstood) {
+      setCookieToNeverExpire("informationUnderstood");
+    }
+    setIsOpen(false);
+  };
+
   return (
     <Modal
       isOpen={isOpen}
       ariaHideApp={true}
-	  className="Modal"
+      className="Modal"
+      onRequestClose={() => closeModal(false)}
+      shouldCloseOnOverlayClick={true}
     >
       <section>
         <h1>Hva er dette?</h1>
@@ -39,14 +48,7 @@ export const InformationPopup = ({ open }) => {
           under denne boksen, og ringe i vei!
         </p>
       </section>
-      <button
-        onClick={() => {
-          setCookieToNeverExpire("informationUnderstood");
-          setIsOpen(false);
-        }}
-      >
-        Jeg forstår!
-      </button>
+      <button onClick={() => closeModal(true)}>Jeg forstår!</button>
     </Modal>
   );
 };
