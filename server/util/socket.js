@@ -107,13 +107,13 @@ function initSocket(socket) {
           return;
         }
 
-        const lastMove = { from: data.from, to: data.to };
         const isGameOver = game.game_over();
         const gameBoard = game.board();
         if (socket !== null) {
-          socket.emit("successMove", gameBoard, isGameOver, lastMove);
+          socket.emit("successMove", gameBoard, isGameOver);
         }
         if (receiver !== null && receiver !== undefined) {
+          const lastMove = { from: data.from, to: data.to };
           const isChecked = game.in_check();
           receiver.emit(
             "opponentMove",

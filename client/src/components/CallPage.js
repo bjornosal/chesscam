@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faPhone } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+import { InformationPopup } from "./InformationPopup";
+import { cookieExists } from "../util/CookieUtil";
 
 const StyledIdContainer = styled.div`
   margin: auto;
@@ -103,7 +105,7 @@ const greetings = [
   "Hej bedstemor!",
 ];
 
-const StartGamePage = ({ startCall, clientId }) => {
+const CallPage = ({ startCall, clientId }) => {
   const [friendID, setFriendID] = useState("");
   const [title, setTitle] = useState("");
 
@@ -122,6 +124,9 @@ const StartGamePage = ({ startCall, clientId }) => {
 
   return (
     <div className="container main-window">
+      {!cookieExists("informationUnderstood") && (
+        <InformationPopup open={true} />
+      )}
       <h1 style={{ fontSize: "3em" }}>{title}</h1>
       <StartPageContainer>
         <StyledIdContainer>
@@ -168,10 +173,10 @@ const StartGamePage = ({ startCall, clientId }) => {
   );
 };
 
-StartGamePage.propTypes = {
+CallPage.propTypes = {
   clientId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
     .isRequired,
   startCall: PropTypes.func.isRequired,
 };
 
-export default StartGamePage;
+export default CallPage;

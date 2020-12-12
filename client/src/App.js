@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Home } from "./components/Home";
+import { MainPage } from "./components/MainPage";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faChessPawn,
@@ -22,7 +22,7 @@ library.add(
 function App() {
   return (
     <div className="App">
-      <Home />
+      <MainPage />
     </div>
   );
 }

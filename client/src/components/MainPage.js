@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import PeerConnection from "../socket/PeerConnection";
 import CallWindow from "./CallWindow";
 import CallModal from "./CallModal";
-import StartGamePage from "./StartGamePage";
+import CallPage from "./CallPage";
 import socket from "../socket/socket";
 
 let pc = {};
-export const Home = () => {
+export const MainPage = () => {
   const [clientId, setClientId] = useState("gamle-drops");
   const [callWindowActive, setCallWindowActive] = useState(false);
   const [callModalActive, setCallModalActive] = useState(false);
@@ -73,7 +73,7 @@ export const Home = () => {
   return (
     <div>
       {(!callWindowActive && (
-        <StartGamePage startCall={startCall} clientId={clientId} />
+        <CallPage startCall={startCall} clientId={clientId} />
       )) ||
         (Object.keys(config).length !== 0 && (
           <CallWindow

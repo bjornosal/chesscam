@@ -168,11 +168,7 @@ export const Board = ({ started }) => {
       doToast("Det er ikke et gyldig trekk.");
       return;
     }
-    if (
-      possibleMoves.some(
-        (move) => move.to === toTile && move.promotion !== undefined
-      )
-    ) {
+    if (possibleMoves.some((move) => move.to === toTile && move.promotion !== undefined)) {
       initPromotionPopup(fromTile, toTile);
       return;
     }
