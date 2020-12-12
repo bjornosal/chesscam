@@ -16,24 +16,8 @@ export const InformationPopup = ({ open }) => {
     <Modal
       isOpen={isOpen}
       ariaHideApp={true}
-      style={{
-        overlay: {},
-        content: {
-          border: "3px solid var(--secondary-color)",
-          background: "var(--main-bg-color)",
-          overflow: "auto",
-          borderRadius: "4px",
-          outline: "none",
-          padding: "20px",
-          top: "50%",
-          left: "50%",
-          right: "auto",
-          bottom: "auto",
-          marginRight: "-50%",
-          transform: "translate(-50%, -50%)",
-          width: "35%",
-        },
-      }}
+	  className="Modal"
+	 
     >
       <section>
         <h1>Hva er dette?</h1>
