@@ -17,7 +17,6 @@ export const InformationPopup = ({ open }) => {
       isOpen={isOpen}
       ariaHideApp={true}
 	  className="Modal"
-	 
     >
       <section>
         <h1>Hva er dette?</h1>
@@ -40,7 +39,6 @@ export const InformationPopup = ({ open }) => {
           under denne boksen, og ringe i vei!
         </p>
       </section>
-      {/* TODO: Save in cookies if clicked */}
       <button
         onClick={() => {
           setCookieToNeverExpire("informationUnderstood");
