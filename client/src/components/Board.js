@@ -65,7 +65,7 @@ export const Board = ({ started }) => {
       })
       .on("successMove", (newBoard, isGameOver) => {
         setBoard(color === colors.WHITE ? newBoard : reverseBoard(newBoard));
-
+        setLastMove({});
         setIsGameOver(isGameOver);
         setMyTurn(false);
         setPossibleMoves([]);
@@ -168,7 +168,11 @@ export const Board = ({ started }) => {
       doToast("Det er ikke et gyldig trekk.");
       return;
     }
-    if (possibleMoves.some((move) => move.to === toTile && move.promotion !== undefined)) {
+    if (
+      possibleMoves.some(
+        (move) => move.to === toTile && move.promotion !== undefined
+      )
+    ) {
       initPromotionPopup(fromTile, toTile);
       return;
     }
