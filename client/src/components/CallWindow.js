@@ -110,6 +110,22 @@ const StyledCallButton = styled.button`
 const StyledGameButton = styled.button`
   width: 40%;
   align-self: center;
+  background-color: var(--secondary-color);
+  border: 1px solid #000;
+  color: inherit;
+  font-size: 2em;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+
+  &:hover {
+    box-shadow: inset 1px 1px 1px 10000px rgba(0, 0, 0, 0.2);
+    color: #fff;
+  }
+
+  @media only screen and (max-width: 768px) {
+    width: 70%;
+  }
 `;
 
 const getButtonClass = (icon, enabled) => {
@@ -166,7 +182,7 @@ function CallWindow({
         <Board started={started} />
         {!started && (
           <StyledGameButton type="button" onClick={() => socket.emit("start")}>
-            Start et spill!
+            Start et spill med sjakk!
           </StyledGameButton>
         )}
       </GameContainer>
