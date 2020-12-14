@@ -60,6 +60,7 @@ const MyInfoContainer = styled.div`
 
 const StyledPeerVideo = styled.video`
   width: 80%;
+  max-height: 40%;
   padding-bottom: 1em;
   border: 1px solid rgba(0, 0, 0, 0.4);
   border-radius: 2px;
@@ -182,7 +183,7 @@ function CallWindow({
         <Board started={started} />
         {!started && (
           <StyledGameButton type="button" onClick={() => socket.emit("start")}>
-            Start et spill med sjakk!
+            Start et spill med!
           </StyledGameButton>
         )}
       </GameContainer>
