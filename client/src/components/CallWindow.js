@@ -32,6 +32,7 @@ const GameContainer = styled.div`
   width: 50%;
   @media only screen and (max-width: 768px) {
     width: 100%;
+    max-height: 50%;
   }
 `;
 const ChatContainer = styled.div`
@@ -43,6 +44,7 @@ const ChatContainer = styled.div`
   @media only screen and (max-width: 768px) {
     width: 100%;
     flex-direction: column-reverse;
+    max-height: 40%;
   }
 `;
 
@@ -183,7 +185,7 @@ function CallWindow({
         <Board started={started} />
         {!started && (
           <StyledGameButton type="button" onClick={() => socket.emit("start")}>
-            Start et spill med!
+            Start et spill med sjakk!
           </StyledGameButton>
         )}
       </GameContainer>
