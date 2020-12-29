@@ -5,22 +5,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faPhone } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
-const StyledCallModal = styled.div`
-  position: fixed;
-  width: 600px;
-  padding: 50px;
-  text-align: center;
-  left: calc(50vw - 350px);
-  top: calc(50vh - 60px);
-  background-color: var(--main-bg-color);
-  display: ${(props) => (props.active ? "block" : "none")};
-  z-index: ${(props) => (props.active ? 9999 : "")};
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+const CallButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const StyledIncomingCallButton = styled.button`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 1em;
   background-color: var(--secondary-color);
   margin: 0.1em;
@@ -28,11 +25,23 @@ const StyledIncomingCallButton = styled.button`
   border-radius: 12px;
   box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.1);
   transition: 0.5s ease;
+  flex: 1 1 0px;
+
+  p {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+
   :hover {
     border: 2px solid var(--main-bg-color);
-    cursor: pointer;
     box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.4);
     transition: 0.5s ease;
+    cursor: pointer;
+  }
+
+  @media only screen and (max-width: 768px) {
+    width: 80%;
   }
 `;
 
@@ -43,7 +52,6 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
   };
 
   return (
-    // <StyledCallModal active={status} className={`call-modal `}>
     <Modal
       isOpen={status}
       ariaHideApp={true}
@@ -74,20 +82,28 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
           callFrom || "Barnebarnet ditt"
         } ringer`}</span>
       </p>
-      <StyledIncomingCallButton type="button" onClick={acceptWithVideo(true)}>
-        <FontAwesomeIcon icon={faVideo} size="2x" />
-      </StyledIncomingCallButton>
-      <StyledIncomingCallButton type="button" onClick={acceptWithVideo(false)}>
-        <FontAwesomeIcon icon={faPhone} size="2x" />
-      </StyledIncomingCallButton>
-      <StyledIncomingCallButton
-        type="button"
-        className="hangup"
-        onClick={rejectCall}
-        style={{ backgroundColor: "red" }}
-      >
-        <FontAwesomeIcon icon={faPhone} size="2x" />
-      </StyledIncomingCallButton>
+      <CallButtonContainer>
+        <StyledIncomingCallButton type="button" onClick={acceptWithVideo(true)}>
+          <FontAwesomeIcon icon={faVideo} size="2x" />
+          <p>Svar med video</p>
+        </StyledIncomingCallButton>
+        <StyledIncomingCallButton
+          type="button"
+          onClick={acceptWithVideo(false)}
+        >
+          <FontAwesomeIcon icon={faPhone} size="2x" />
+          <p>Svar uten video</p>
+        </StyledIncomingCallButton>
+        <StyledIncomingCallButton
+          type="button"
+          className="hangup"
+          onClick={rejectCall}
+          style={{ backgroundColor: "red" }}
+        >
+          <FontAwesomeIcon icon={faPhone} size="2x" />
+          <p>Avslå anrop</p>
+        </StyledIncomingCallButton>
+      </CallButtonContainer>
     </Modal>
   );
 }
