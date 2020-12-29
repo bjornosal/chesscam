@@ -84,14 +84,14 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
       </p>
       <CallButtonContainer>
         <StyledIncomingCallButton type="button" onClick={acceptWithVideo(true)}>
-          <FontAwesomeIcon icon={faVideo} size="2x" />
+          <FontAwesomeIcon icon={faVideo} size="3x" />
           <p>Svar med video</p>
         </StyledIncomingCallButton>
         <StyledIncomingCallButton
           type="button"
           onClick={acceptWithVideo(false)}
         >
-          <FontAwesomeIcon icon={faPhone} size="2x" />
+          <FontAwesomeIcon icon={faPhone} size="3x" />
           <p>Svar uten video</p>
         </StyledIncomingCallButton>
         <StyledIncomingCallButton
@@ -100,7 +100,7 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
           onClick={rejectCall}
           style={{ backgroundColor: "red" }}
         >
-          <FontAwesomeIcon icon={faPhone} size="2x" />
+          <FontAwesomeIcon icon={faPhone} size="3x" />
           <p>Avslå anrop</p>
         </StyledIncomingCallButton>
       </CallButtonContainer>
