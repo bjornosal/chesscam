@@ -6,14 +6,16 @@ import CallPage from "./CallPage";
 import socket from "../socket/socket";
 
 let pc = {};
+
 export const MainPage = () => {
-  const [clientId, setClientId] = useState("gamle-drops");
+  const [clientId, setClientId] = useState("gamle drops");
   const [callWindowActive, setCallWindowActive] = useState(false);
   const [callModalActive, setCallModalActive] = useState(false);
   const [callFrom, setCallFrom] = useState("");
   const [localSource, setLocalSource] = useState(null);
   const [peerSource, setPeerSource] = useState(null);
   const [config, setConfig] = useState({});
+
   useEffect(() => {
     socket
       .on("init", ({ id: clientId }) => {

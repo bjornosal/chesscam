@@ -146,7 +146,7 @@ const CallPage = ({ startCall, clientId }) => {
             type="text"
             className="clientId"
             spellCheck={false}
-            placeholder="Bestemors id"
+            placeholder="Mormor sin id"
             onChange={(event) => {
               setFriendID(event.target.value);
             }}
