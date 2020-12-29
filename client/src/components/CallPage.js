@@ -85,11 +85,31 @@ const StyledCallButton = styled.button`
   border-radius: 24px;
   box-shadow: 0px 1px 1px 2px rgba(0, 0, 0, 0.6);
   transition: 0.5s ease;
+
+  p {
+    color: #fff;
+    font-weight: bold;
+    font-size: 2em;
+    padding: 0;
+  }
+
   :hover {
     border: 2px solid var(--main-bg-color);
     cursor: pointer;
     box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.4);
     transition: 0.5s ease;
+  }
+
+  @media only screen and (max-width: 768px) {
+    p {
+      font-size: 1.5em;
+    }
+  }
+
+  @media only screen and (min-width: 768px) {
+    svg {
+      font-size: 3em;
+    }
   }
 `;
 
@@ -154,19 +174,13 @@ const CallPage = ({ startCall, clientId }) => {
           />
         </StyledFriendIdContainer>
         <StyledCallContainer>
-          <StyledCallButton
-            type="button"
-            className=" fa fa-video-camera fa-3x"
-            onClick={callWithVideo(true)}
-          >
-            <FontAwesomeIcon icon={faVideo} />
+          <StyledCallButton type="button" onClick={callWithVideo(true)}>
+            <FontAwesomeIcon icon={faVideo} size="2x" />
+            <p>Ring med video</p>
           </StyledCallButton>
-          <StyledCallButton
-            type="button"
-            className=" fa fa-phone fa-3x"
-            onClick={callWithVideo(false)}
-          >
-            <FontAwesomeIcon icon={faPhone} />
+          <StyledCallButton type="button" onClick={callWithVideo(false)}>
+            <FontAwesomeIcon icon={faPhone} size="2x" />
+            <p>Ring uten video</p>
           </StyledCallButton>
         </StyledCallContainer>
       </StartPageContainer>
