@@ -18,6 +18,7 @@ const StyledIncomingCallButton = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1 1 0px;
   padding: 1em;
   background-color: var(--secondary-color);
   margin: 0.1em;
@@ -25,7 +26,6 @@ const StyledIncomingCallButton = styled.button`
   border-radius: 12px;
   box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.1);
   transition: 0.5s ease;
-  flex: 1 1 0px;
 
   p {
     color: #fff;

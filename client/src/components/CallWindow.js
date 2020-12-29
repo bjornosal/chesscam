@@ -87,10 +87,16 @@ const MyVideo = styled.video`
 
 const VideoControl = styled.div`
   align-self: flex-end;
+  display: flex;
 `;
 
 const StyledCallButton = styled.button`
-  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 0px;
+
+  padding: 1em;
   background-color: ${(props) =>
     props.active ? "var(--secondary-color)" : "red"};
   margin: 0.1em;
@@ -98,6 +104,14 @@ const StyledCallButton = styled.button`
   border-radius: 2px;
   box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.1);
   transition: 0.5s ease;
+
+  p {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.5em;
+    padding: 0;
+  }
+
   :hover {
     border: 2px solid var(--main-bg-color);
     cursor: pointer;
@@ -106,7 +120,16 @@ const StyledCallButton = styled.button`
   }
 
   @media only screen and (max-width: 768px) {
-    padding: 1em;
+    padding: 0em;
+    padding-top: 0.1em;
+    svg {
+      font-size: 1.5em;
+    }
+    p {
+      font-size: 1em;
+      padding: 0;
+      margin-bottom: 0.1em;
+    }
   }
 `;
 
@@ -203,8 +226,9 @@ function CallWindow({
             >
               <FontAwesomeIcon
                 icon={video ? faVideo : faVideoSlash}
-                style={{ transform: "scale(2)" }}
+                size="3x"
               />
+              <p>Slå {video ? "av" : "på"} video</p>
             </StyledCallButton>
             <StyledCallButton
               key="btnAudio"
@@ -215,8 +239,9 @@ function CallWindow({
             >
               <FontAwesomeIcon
                 icon={audio ? faMicrophone : faMicrophoneSlash}
-                style={{ transform: "scale(2)" }}
+                size={"3x"}
               />
+              <p>Slå {video ? "av" : "på"} mikrofon</p>
             </StyledCallButton>
             <StyledCallButton
               type="button"
@@ -224,10 +249,8 @@ function CallWindow({
               onClick={() => endCall(true)}
               style={{ backgroundColor: "red" }}
             >
-              <FontAwesomeIcon
-                icon={faPhone}
-                style={{ transform: "scale(2)" }}
-              />
+              <FontAwesomeIcon icon={faPhone} size="3x" />
+              <p>Legg på</p>
             </StyledCallButton>
           </VideoControl>
         </MyInfoContainer>
