@@ -1,4 +1,4 @@
-# chesscam
+# spillmedmormor
 
 An application for playing chess with video chat possibilities. 
 Using WebRTC with node.js as a delegator. 
